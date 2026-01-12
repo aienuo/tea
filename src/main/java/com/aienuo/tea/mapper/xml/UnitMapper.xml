@@ -17,10 +17,10 @@
         <result column="ZQNM" property="warZone" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="BZNM" property="militaryBranch" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="DMNM" property="areaCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result column="JD" property="longitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-        <result column="WD" property="latitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-        <result column="HB" property="altitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-        <result column="DETAILED_ADDRESS" property="address" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="ZBJD" property="longitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="ZBWD" property="latitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="ZBHB" property="altitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="XXDZ" property="address" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!-- 树查询 -->
@@ -36,10 +36,10 @@
             ,BDJB
             ,BDLX
             ,DMNM
-            ,JD
-            ,WD
-            ,HB
-            ,DETAILED_ADDRESS
+            ,ZBJD
+            ,ZBWD
+            ,ZBHB
+            ,XXDZ
         FROM
             <include refid="table_name"/>
         ORDER BY

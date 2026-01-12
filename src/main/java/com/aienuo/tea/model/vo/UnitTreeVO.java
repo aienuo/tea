@@ -26,15 +26,15 @@ public class UnitTreeVO extends BaseTree<UnitTreeVO> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 部队番号
+     * 番号
      */
-    @Schema(description = "部队番号")
+    @Schema(description = "番号")
     private String name;
 
     /**
-     * 部队简称
+     * 简称
      */
-    @Schema(description = "部队简称")
+    @Schema(description = "简称")
     private String abbreviation;
 
     /**

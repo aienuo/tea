@@ -217,7 +217,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
                 put("table_name", type);
             }});
             // 查询数据
-            return  this.list();
+            return this.list();
         } finally {
             // 清理数据
             RequestDataHelper.removeRequestData();

@@ -26,13 +26,13 @@ public class Unit extends BaseTree<Unit> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 部队番号
+     * 番号
      */
     @TableField(value = "BDFH")
     private String name;
 
     /**
-     * 部队简称
+     * 简称
      */
     @TableField(value = "BDJC")
     private String abbreviation;
@@ -50,21 +50,33 @@ public class Unit extends BaseTree<Unit> implements Serializable {
     private String militaryBranch;
 
     /**
+     * 类型
+     */
+    @TableField(value = "BDLX")
+    private String type;
+
+    /**
+     * 级别
+     */
+    @TableField(value = "BDJB")
+    private String grade;
+
+    /**
      * 经度
      */
-    @TableField(value = "LONGITUDE")
+    @TableField(value = "ZBJD")
     private BigDecimal longitude;
 
     /**
      * 纬度
      */
-    @TableField(value = "LATITUDE")
+    @TableField(value = "ZBWD")
     private BigDecimal latitude;
 
     /**
      * 海拔
      */
-    @TableField(value = "ALTITUDE")
+    @TableField(value = "ZBHB")
     private BigDecimal altitude;
 
     /**
@@ -76,7 +88,7 @@ public class Unit extends BaseTree<Unit> implements Serializable {
     /**
      * 详细地址
      */
-    @TableField(value = "DETAILED_ADDRESS")
+    @TableField(value = "XXDZ")
     private String address;
 
 }

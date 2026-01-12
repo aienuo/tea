@@ -35,17 +35,17 @@ public class UnitAddDTO implements Serializable {
     private String parentId;
 
     /**
-     * 部队番号
+     * 番号
      */
-    @Schema(description = "部队番号", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "部队番号不能为空")
+    @Schema(description = "番号", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "番号不能为空")
     private String name;
 
     /**
-     * 部队简称
+     * 简称
      */
-    @Schema(description = "部队简称", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "部队简称不能为空")
+    @Schema(description = "简称", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "简称不能为空")
     private String abbreviation;
 
     /**

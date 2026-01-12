@@ -89,18 +89,17 @@ class TeaApplicationTests {
      */
     private void passwordTest() {
 
-        String base64 = "cGFzc3dvcmQwMiE=";
+        String input = "password02!";
+        log.info("输入内容： {}", input);
 
-        String input = new String(Base64.getDecoder().decode(base64), StandardCharsets.UTF_8);
+        String base64 = Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));
+        log.info("传递给后端前 编码后内容： {}", base64);
 
-        String out = Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));
+        String decoding = new String(Base64.getDecoder().decode(base64), StandardCharsets.UTF_8);
+        log.info("获取前端内容 解码后内容： {}", decoding);
 
-        log.info("base64 解码后： {}", input);
-
-        log.info("base64 编码后： {}", out);
-
-        String password = TokenUtils.encodePassword("password02!");
-        log.info("password 加密后： {}", password);
+        String password = TokenUtils.encodePassword(decoding);
+        log.info("输入内容 加密后（数据库实际存储内容）： {}", password);
     }
 
     /**
@@ -181,7 +180,6 @@ class TeaApplicationTests {
     public static void main(String[] args) {
         new TeaApplicationTests().tokenUtilTest();
         new TeaApplicationTests().databasePropertiesEncrypt();
-        // rXEKCz8LyZaeRar4RDG64QJn576Jyc98Y5wrpptbvp8=
         new TeaApplicationTests().passwordTest();
         new TeaApplicationTests().testLatchUtils();
     }
