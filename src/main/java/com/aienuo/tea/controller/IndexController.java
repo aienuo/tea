@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -40,6 +41,7 @@ import java.util.*;
 /**
  * 典型应用
  */
+@Slf4j
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -47,7 +49,6 @@ import java.util.*;
 @Tag(name = "典型应用", description = "典型应用", extensions = {
         @Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})
 })
-
 public class IndexController {
 
     /**
@@ -154,7 +155,31 @@ public class IndexController {
         // 获得 Redis 统计信息
         Properties info = this.redisTemplate.execute((RedisCallback<Properties>) RedisServerCommands::info);
         Long databaseSize = this.redisTemplate.execute(RedisServerCommands::dbSize);
-        Properties commandStats = this.redisTemplate.execute((RedisCallback<Properties>) connection -> connection.info("commandstats"));
+
+        // 修复废弃方法：使用 execute 方法执行 INFO commandstats 命令
+        Properties commandStats = this.redisTemplate.execute((RedisCallback<Properties>) connection -> {
+            Properties props = new Properties();
+            try {
+                Object result = connection.execute("INFO", "commandstats".getBytes());
+                if (result != null) {
+                    String infoResult = String.valueOf(result);
+                    String[] lines = infoResult.split("\r\n");
+                    for (String line : lines) {
+                        if (line.startsWith("cmdstat_")) {
+                            int separatorIndex = line.indexOf(':');
+                            if (separatorIndex > 0) {
+                                String key = line.substring(0, separatorIndex);
+                                String value = line.substring(separatorIndex + 1);
+                                props.setProperty(key, value);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                log.error("获取 Redis 统计信息异常： {}", e.getMessage(), e);
+            }
+            return props;
+        });
 
         RedisMonitorVO redisMonitor = new RedisMonitorVO();
         // Redis info 指令结果
@@ -172,7 +197,9 @@ public class IndexController {
             String[] array = String.valueOf(value).split(StringPool.COMMA);
             for (String string : array) {
                 String[] stringArray = string.split(StringPool.EQUALS);
-                map.put(stringArray[0], stringArray[1]);
+                if (stringArray.length == 2) {
+                    map.put(stringArray[0], stringArray[1]);
+                }
             }
             // 命令参数
             commandStat.setParam(map);

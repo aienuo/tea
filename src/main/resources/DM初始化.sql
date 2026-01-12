@@ -1126,3 +1126,8 @@ ALTER TABLE "SYS_USER_ROLE"
 -- ----------------------------
 ALTER TABLE "TEMPLET"
     ADD PRIMARY KEY ("ID");
+
+-- ----------------------------
+-- 默认账号，admin 密码 admin
+-- ----------------------------
+INSERT INTO "SYS_USER" ("ID", "USERNAME", "PASSWORD", "REAL_NAME", "IDENTITY_NUMBER", "UNIT_ID", "DEL_FLAG", "CREATOR_BY", "CREATE_TIME", "UPDATER_BY", "UPDATE_TIME") VALUES ('1', 'admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', '管理员', NULL, NULL, 0, '1', TO_TIMESTAMP('2026-01-12 14:18:40.000000', 'SYYYY-MM-DD HH24:MI:SS:FF6'), '1', TO_TIMESTAMP('2026-01-12 14:18:44.000000', 'SYYYY-MM-DD HH24:MI:SS:FF6'));

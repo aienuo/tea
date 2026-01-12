@@ -68,11 +68,11 @@ class TeaApplicationTests {
         String key = "9jubPvDU84wkzOm4";
         log.info("key： {}", key);
 
-        String url_resource_guarantee = "jdbc:dm://120.130.140.203:6325?schema=TYPICAL_APPLICATION_RESOURCE_GUARANTEE";
+        String url_resource_guarantee = "jdbc:dm://100.110.111.102:6325?schema=TYPICAL_APPLICATION_RESOURCE_GUARANTEE";
         url_resource_guarantee = AES.encrypt(url_resource_guarantee, key);
         log.info("URL 加密后： mpw:{}", url_resource_guarantee);
 
-        String url_training_assessment = "jdbc:dm://120.130.140.203:6325?schema=TYPICAL_APPLICATION_TRAINING_ASSESSMENT";
+        String url_training_assessment = "jdbc:dm://100.110.111.102:6325?schema=TYPICAL_APPLICATION_TRAINING_ASSESSMENT";
         url_training_assessment = AES.encrypt(url_training_assessment, key);
         log.info("URL 加密后： mpw:{}", url_training_assessment);
 
