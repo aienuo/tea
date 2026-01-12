@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.tea.mapper.RoleMapper">
+
+    <!-- 数据表名称 -->
+    <sql id="table_name">
+        SYS_ROLE
+    </sql>
+
+    <!-- 数据分页 - 查询返回值 -->
+    <resultMap id="pageQuery" type="com.aienuo.tea.model.vo.RolePageVO">
+        <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MC" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="MS" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 分页查询 -->
+    <select id="pagingQueryListByParameter" resultMap="pageQuery">
+        SELECT
+            ID
+            , SORT_NO
+            , MC
+            , MS
+        FROM
+            <include refid="table_name"/>
+        <where>
+            <if test="param.id != null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.name != null and param.name != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="nameLike" value="'%' + param.name + '%'"/>
+                AND MC LIKE #{nameLike}
+            </if>
+
+            <!-- 创建人 -->
+            <if test="param.creatorBy != null and param.creatorBy != ''">
+                AND creator_by = #{param.creatorBy}
+            </if>
+            <!-- 创建时间-起 -->
+            <if test="param.createTimeStart != null">
+                AND create_time <![CDATA[>=]]> #{param.createTimeStart}
+            </if>
+            <!-- 创建时间-止 -->
+            <if test="param.createTimeEnd != null ">
+                AND create_time <![CDATA[<=]]> #{param.createTimeEnd}
+            </if>
+            <!-- 更新人 -->
+            <if test="param.updaterBy != null and param.updaterBy != ''">
+                AND updater_by = #{param.updaterBy}
+            </if>
+            <!-- 更新时间-起 -->
+            <if test="param.updateTimeStart != null">
+                AND update_time <![CDATA[>=]]> #{param.updateTimeStart}
+            </if>
+            <!-- 更新时间-止 -->
+            <if test="param.updateTimeEnd != null ">
+                AND update_time <![CDATA[<=]]> #{param.updateTimeEnd}
+            </if>
+            <!-- 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突） -->
+            <if test="param.superQueryParams != null and param.superQueryParams != ''">
+                AND #{param.superQueryParams}
+            </if>
+        </where>
+        ORDER BY
+            SORT_NO
+    </select>
+
+    <!-- 标识查询 - 查询返回值 -->
+    <resultMap id="queryDataById" type="com.aienuo.tea.model.vo.RoleVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MC" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="MS" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <collection property="permissionList" ofType="java.lang.String" javaType="java.util.List" column="{roleId=id}" select="com.aienuo.tea.mapper.RolePermissionMapper.queryPermissionIdListByRoleId"/>
+    </resultMap>
+
+    <!-- 标识查询 -->
+    <select id="queryById" resultMap="queryDataById">
+        SELECT
+            ID
+            , SORT_NO
+            , MC
+            , MS
+        FROM
+            <include refid="table_name"/>
+        WHERE id = #{id}
+    </select>
+
+    <!-- 角色下拉列表 -->
+    <select id="list" resultMap="com.aienuo.tea.mapper.DictMapper.listQuery">
+        SELECT
+            ID AS value
+            , MC AS label
+        FROM
+            <include refid="table_name"/>
+        ORDER BY
+            SORT_NO
+    </select>
+
+</mapper>

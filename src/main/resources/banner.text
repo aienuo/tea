@@ -1,0 +1,20 @@
+${AnsiColor.BLUE}
+
+
+
+  .--.   .-. .----. .-. .-. .-. .-.  .---.
+ / {} \  { | } |__} |  \{ | | } { | / {-. \
+/  /\  \ | } } '__} | }\  { \ `-' / \ '-} /
+`-'  `-' `-' `----' `-' `-'  `---'   `---'
+                               🚀aienuo.com🚀
+
+
+${AnsiColor.BRIGHT_MAGENTA}
+
+Application Title 🚀: ${application.title}
+
+Application Version 🚀: ${application.version}${application.formatted-version}
+
+Spring Boot Version 🚀: ${spring-boot.version}${spring-boot.formatted-version}
+
+${AnsiColor.BLACK}

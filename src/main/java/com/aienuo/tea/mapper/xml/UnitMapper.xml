@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.tea.mapper.UnitMapper">
+
+    <!-- 数据表名称 -->
+    <sql id="table_name">
+        SYS_UNIT
+    </sql>
+
+    <!-- 树查询 - 查询返回值 -->
+    <resultMap id="listQuery" type="com.aienuo.tea.model.vo.UnitTreeVO">
+        <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="PARENT_ID" property="parentId" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="BDFH" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="BDJC" property="abbreviation" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="ZQNM" property="warZone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="BZNM" property="militaryBranch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="DMNM" property="areaCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="JD" property="longitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="WD" property="latitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="HB" property="altitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="DETAILED_ADDRESS" property="address" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 树查询 -->
+    <select id="queryList" resultMap="listQuery">
+        SELECT
+            ID
+            ,PARENT_ID
+            ,SORT_NO
+            ,BDFH
+            ,BDJC
+            ,ZQNM
+            ,BZNM
+            ,BDJB
+            ,BDLX
+            ,DMNM
+            ,JD
+            ,WD
+            ,HB
+            ,DETAILED_ADDRESS
+        FROM
+            <include refid="table_name"/>
+        ORDER BY
+            SORT_NO
+    </select>
+
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.tea.mapper.LogMapper">
+
+    <!-- 数据表名称 -->
+    <sql id="table_name">
+        SYS_LOG
+    </sql>
+
+    <!-- 数据分页 - 查询返回值 -->
+    <resultMap id="pageQuery" type="com.aienuo.tea.model.vo.LogVO">
+        <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="TOKEN" property="token" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="METHOD" property="method" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="URL" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="PARAMETERS" property="parameters" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="USER_IP" property="userIp" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="HEADER" property="header" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result column="DURATION" property="duration" javaType="java.lang.Long" jdbcType="INTEGER"/>
+        <result column="CODE" property="code" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="MESSAGE" property="message" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="CREATOR_BY" property="creatorBy" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 分页查询 -->
+    <select id="pagingQueryListByParameter" resultMap="pageQuery">
+        SELECT
+        ID, TOKEN, METHOD, URL, PARAMETERS, USER_IP, HEADER, START_TIME, END_TIME, DURATION, CODE, MESSAGE, CREATOR_BY, CREATE_TIME
+        FROM
+        <include refid="table_name"/>
+        <where>
+            <if test="param.id != null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.method != null and param.method != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="methodLike" value="'%' + param.method + '%'"/>
+                AND METHOD LIKE #{methodLike}
+            </if>
+            <if test="param.url != null and param.url != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="urlLike" value="'%' + param.url + '%'"/>
+                AND URL LIKE #{urlLike}
+            </if>
+            <if test="param.parameters != null and param.parameters != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="paramLike" value="'%' + param.parameters + '%'"/>
+                AND PARAMETERS LIKE #{paramLike}
+            </if>
+            <if test="param.userIp != null and param.userIp != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="userIpLike" value="'%' + param.userIp + '%'"/>
+                AND USER_IP LIKE #{userIpLike}
+            </if>
+            <if test="param.header != null and param.header != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="headerLike" value="'%' + param.header + '%'"/>
+                AND HEADER LIKE #{headerLike}
+            </if>
+            <if test="param.startTime != null">
+                AND START_TIME <![CDATA[<=]]> #{param.startTime}
+            </if>
+            <if test="param.endTime != null ">
+                AND END_TIME <![CDATA[<=]]> #{param.endTime}
+            </if>
+            <if test="param.code != null">
+                AND CODE = #{param.code}
+            </if>
+
+            <!-- 创建人 -->
+            <if test="param.creatorBy != null and param.creatorBy != ''">
+                AND creator_by = #{param.creatorBy}
+            </if>
+            <!-- 创建时间-起 -->
+            <if test="param.createTimeStart != null">
+                AND create_time <![CDATA[>=]]> #{param.createTimeStart}
+            </if>
+            <!-- 创建时间-止 -->
+            <if test="param.createTimeEnd != null ">
+                AND create_time <![CDATA[<=]]> #{param.createTimeEnd}
+            </if>
+            <!-- 更新人 -->
+            <if test="param.updaterBy != null and param.updaterBy != ''">
+                AND updater_by = #{param.updaterBy}
+            </if>
+            <!-- 更新时间-起 -->
+            <if test="param.updateTimeStart != null">
+                AND update_time <![CDATA[>=]]> #{param.updateTimeStart}
+            </if>
+            <!-- 更新时间-止 -->
+            <if test="param.updateTimeEnd != null ">
+                AND update_time <![CDATA[<=]]> #{param.updateTimeEnd}
+            </if>
+            <!-- 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突） -->
+            <if test="param.superQueryParams != null and param.superQueryParams != ''">
+                AND #{param.superQueryParams}
+            </if>
+        </where>
+        ORDER BY
+        CREATE_TIME DESC
+    </select>
+
+    <delete id="clean" parameterType="java.lang.Long">
+        DELETE FROM
+        <include refid="table_name"/>
+        <where>
+            <if test="param.id != null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.code != null">
+                AND CODE = #{param.code}
+            </if>
+
+            <if test="param.creatorBy != null and param.creatorBy != ''">
+                AND creator_by = #{param.creatorBy}
+            </if>
+            <if test="param.createTime != null ">
+                AND create_time <![CDATA[<=]]> #{param.createTime}
+            </if>
+        </where>
+        <choose>
+            <when test="param.limit != null ">
+                LIMIT #{param.limit}
+            </when>
+            <otherwise>
+                LIMIT 1000
+            </otherwise>
+        </choose>
+    </delete>
+
+</mapper>

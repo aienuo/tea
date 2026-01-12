@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.tea.mapper.PermissionMapper">
+
+    <!-- 数据表名称 -->
+    <sql id="table_name">
+        SYS_PERMISSION
+    </sql>
+
+    <!-- 树查询 - 查询返回值 -->
+    <resultMap id="listQuery" type="com.aienuo.tea.model.vo.PermissionTreeVO">
+        <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="PARENT_ID" property="parentId" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="LX" property="type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MC" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="URI" property="uri" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="TB" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MS" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 树查询 -->
+    <select id="queryList" resultMap="listQuery">
+        SELECT
+            ID
+            , SORT_NO
+            , PARENT_ID
+            , LX
+            , MC
+            , URI
+            , TB
+            , MS
+        FROM
+            <include refid="table_name"/>
+        <where>
+            AND LJSC = 0
+            <!--<if test="param.id != null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.parentId != null and param.parentId != '' ">
+                AND PARENT_ID = #{param.parentId}
+            </if>
+            <if test="param.type != null and param.type != '' ">
+                AND LX = #{param.type}
+            </if>
+            <if test="param.name != null and param.name != '' ">
+                &lt;!&ndash; Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 &ndash;&gt;
+                <bind name="nameLike" value="'%' + param.name + '%'"/>
+                AND MC LIKE #{nameLike}
+            </if>
+            <if test="param.uri != null and param.uri != '' ">
+                &lt;!&ndash; Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 &ndash;&gt;
+                <bind name="uriLike" value="'%' + param.uri + '%'"/>
+                AND URI LIKE #{uriLike}
+            </if>
+
+            &lt;!&ndash; 创建人 &ndash;&gt;
+            <if test="param.creatorBy != null and param.creatorBy != ''">
+                AND creator_by = #{param.creatorBy}
+            </if>
+            &lt;!&ndash; 创建时间-起 &ndash;&gt;
+            <if test="param.createTimeStart != null">
+                AND create_time <![CDATA[>=]]> #{param.createTimeStart}
+            </if>
+            &lt;!&ndash; 创建时间-止 &ndash;&gt;
+            <if test="param.createTimeEnd != null ">
+                AND create_time <![CDATA[<=]]> #{param.createTimeEnd}
+            </if>
+            &lt;!&ndash; 更新人 &ndash;&gt;
+            <if test="param.updaterBy != null and param.updaterBy != ''">
+                AND updater_by = #{param.updaterBy}
+            </if>
+            &lt;!&ndash; 更新时间-起 &ndash;&gt;
+            <if test="param.updateTimeStart != null">
+                AND update_time <![CDATA[>=]]> #{param.updateTimeStart}
+            </if>
+            &lt;!&ndash; 更新时间-止 &ndash;&gt;
+            <if test="param.updateTimeEnd != null ">
+                AND update_time <![CDATA[<=]]> #{param.updateTimeEnd}
+            </if>
+            &lt;!&ndash; 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突） &ndash;&gt;
+            <if test="param.superQueryParams != null and param.superQueryParams != ''">
+                AND #{param.superQueryParams}
+            </if>-->
+        </where>
+        ORDER BY
+            SORT_NO
+    </select>
+
+    <!-- 查询菜单权限 - 查询返回值 -->
+    <resultMap id="menuListQuery" type="com.aienuo.tea.model.vo.MenuTreeVO">
+        <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="PARENT_ID" property="parentId" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MC" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="URI" property="uri" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="TB" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MS" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 查询菜单权限 -->
+    <select id="queryMenuListByParameter" resultMap="menuListQuery">
+        SELECT
+            ID
+            , SORT_NO
+            , PARENT_ID
+            , LX
+            , MC
+            , URI
+            , TB
+            , MS
+        FROM
+        <include refid="table_name"/>
+        <where>
+            AND LJSC = 0
+            AND LX IN ( '01', '02' )
+            <!-- 菜单权限标识 -->
+            <if test="permissionIdList != null and !permissionIdList.isEmpty()">
+                AND ID IN
+                <foreach item="permissionId" collection="permissionIdList" open="(" separator="," close=")">
+                    #{permissionId}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY
+            SORT_NO
+    </select>
+
+    <!-- 查询按钮权限 - 查询返回值 -->
+    <resultMap id="buttonListQuery" type="com.aienuo.tea.model.vo.ButtonVO">
+        <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="MC" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="URI" property="uri" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="TB" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="MS" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 查询按钮权限 -->
+    <select id="queryButtonListByParameter" resultMap="buttonListQuery">
+        SELECT
+            ID
+            , SORT_NO
+            , PARENT_ID
+            , LX
+            , MC
+            , URI
+            , TB
+            , MS
+        FROM
+            <include refid="table_name"/>
+        <where>
+            AND LJSC = 0
+            AND LX = '03'
+            <!-- 菜单权限标识 -->
+            <if test="permissionIdList != null and !permissionIdList.isEmpty()">
+                AND ID IN
+                <foreach item="permissionId" collection="permissionIdList" open="(" separator="," close=")">
+                    #{permissionId}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY
+            SORT_NO
+    </select>
+
+</mapper>

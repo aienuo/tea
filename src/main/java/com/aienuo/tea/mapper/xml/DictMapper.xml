@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.tea.mapper.DictMapper">
+
+    <!-- 字典 - 项 - 数据列表 - 查询返回值 -->
+    <resultMap id="listQuery" type="com.aienuo.tea.model.vo.OptionVO">
+        <id column="value" property="value" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="label" property="label" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 字典 - 数据库表名称 -->
+    <select id="queryTableItemListForMySQL" resultMap="listQuery">
+        SELECT
+            TABLE_NAME,
+            REPLACE(TABLE_NAME, 'sys_dict_item_', '') AS 'value',
+            TABLE_COMMENT AS label
+        FROM
+            information_schema.TABLES
+        <where>
+            AND table_schema = 'typical_application_resource_guarantee'
+            AND table_type = 'BASE TABLE'
+            AND TABLE_NAME LIKE 'sys_dict_item_%'
+            <!-- 表标识 -->
+            <if test="param.value != null and param.value != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="valueLike" value="'%' + param.value + '%'"/>
+                AND TABLE_NAME LIKE #{valueLike}
+            </if>
+            <!-- 表名称 -->
+            <if test="param.label != null and param.label != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="labelLike" value="'%' + param.label + '%'"/>
+                AND TABLE_COMMENT LIKE #{labelLike}
+            </if>
+        </where>
+    </select>
+
+    <!-- 字典 - 数据库表名称 -->
+    <select id="queryTableItemListForDM" resultMap="listQuery">
+        SELECT
+            TABLE_NAME,
+            REPLACE(TABLE_NAME, 'SYS_DICT_ITEM_', '') AS "value",
+            COMMENTS AS "label"
+        FROM
+            "SYS"."ALL_TAB_COMMENTS"
+        <where>
+            AND OWNER = 'TYPICAL_APPLICATION_RESOURCE_GUARANTEE'
+            AND TABLE_TYPE = 'TABLE'
+            AND TABLE_NAME LIKE '%SYS_DICT_ITEM_%'
+            <!-- 表标识 -->
+            <if test="param.value != null and param.value != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="valueLike" value="'%' + param.value + '%'"/>
+                AND TABLE_NAME LIKE #{valueLike}
+            </if>
+            <!-- 表名称 -->
+            <if test="param.label != null and param.label != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="labelLike" value="'%' + param.label + '%'"/>
+                AND COMMENTS LIKE #{labelLike}
+            </if>
+        </where>
+    </select>
+
+</mapper>

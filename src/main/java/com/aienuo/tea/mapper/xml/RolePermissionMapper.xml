@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.tea.mapper.RolePermissionMapper">
+
+    <!-- 数据表名称 -->
+    <sql id="table_name">
+        SYS_ROLE_PERMISSION
+    </sql>
+
+    <!-- 指定角色下的菜单权限标识 -->
+    <select id="queryPermissionIdListByRoleId" resultType="java.lang.String">
+        SELECT CDQX FROM <include refid="table_name"/> WHERE JS = #{roleId}
+    </select>
+
+</mapper>
