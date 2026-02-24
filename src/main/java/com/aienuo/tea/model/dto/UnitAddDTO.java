@@ -49,6 +49,20 @@ public class UnitAddDTO implements Serializable {
     private String abbreviation;
 
     /**
+     * 类型
+     */
+    @Schema(description = "类型", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "类型不能为空")
+    private String type;
+
+    /**
+     * 级别
+     */
+    @Schema(description = "级别", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "级别不能为空")
+    private String grade;
+
+    /**
      * 战区内码
      */
     @Schema(description = "战区内码")
