@@ -30,3 +30,6 @@ build/
 mvnw
 mvnw.cmd
 .mvn
+
+### Trae ###
+.vscode
