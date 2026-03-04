@@ -56,7 +56,7 @@
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.40</org.projectlombok.version>
         <knife4j.version>4.5.0</knife4j.version>
-        <excel.version>1.3.0</excel.version>
+        <excel.version>2.0.1-incubating</excel.version>
         <!-- 修复 logback 安全漏洞，使用安全版本 -->
         <logback.version>1.5.25</logback.version>
         <!-- 修复 Tomcat 安全漏洞，使用安全版本 -->
@@ -174,7 +174,7 @@
         <!-- excel 导入导出 -->
         <dependency>
             <groupId>org.apache.fesod</groupId>
-            <artifactId>fesod</artifactId>
+            <artifactId>fesod-sheet</artifactId>
             <version>${excel.version}</version>
         </dependency>
         <!-- SM 密码 -->

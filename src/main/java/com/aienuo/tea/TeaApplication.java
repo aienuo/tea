@@ -32,10 +32,11 @@ public class TeaApplication {
                         \r🚀----------------------------------------------------------🚀
                         Application '{}' is running success!
                         接口文档访问地址:
-                        本地Knife4j地址:   http://localhost:{}/doc.html
-                        外部Swagger地址:   http://{}:{}/swagger-ui/index.html
+                        Knife4j地址:   http://{}:{}/doc.html
+                        Swagger地址:   http://{}:{}/swagger-ui/index.html
                         🚀----------------------------------------------------------🚀""",
                 applicationName,
+                hostAddress,
                 serverPort,
                 hostAddress,
                 serverPort
