@@ -59,22 +59,22 @@ public class UserPageVO implements Serializable {
     private String identityNumber;
 
     /**
-     * 单位标识
+     * 组织机构标识
      */
-    @Schema(description = "单位标识")
-    private String unitId;
+    @Schema(description = "组织机构标识")
+    private String organizationId;
 
     /**
-     * 单位名称
+     * 组织机构名称
      */
-    @Schema(description = "单位名称")
-    private String unitName;
+    @Schema(description = "组织机构名称")
+    private String organizationName;
 
     /**
-     * 单位节点
+     * 组织机构节点
      */
-    @Schema(description = "单位节点")
-    private String unitNode;
+    @Schema(description = "组织机构节点")
+    private String organizationNode;
 
     /**
      * 出生日期
@@ -104,7 +104,7 @@ public class UserPageVO implements Serializable {
      * 冻结状态(0-正常，1-冻结）
      */
     @Schema(description = "冻结状态(0-正常，1-冻结）")
-    private Integer delFlag;
+    private Integer deleteFlag;
 
     /**
      * 角色集合

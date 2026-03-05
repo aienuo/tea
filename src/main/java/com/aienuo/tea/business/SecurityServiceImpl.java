@@ -153,16 +153,16 @@ public class SecurityServiceImpl {
                         user = query;
                     }
                     // 转为系统用户字段
-                    user.setUsername(userDataFromToken.getAccount()).setRealName(userDataFromToken.getFullname()).setIdentityNumber(userDataFromToken.getIdString()).setDelFlag(userDataFromToken.getIsDelete() == null || userDataFromToken.getIsDelete() ? 1 : 0).setId(userDataFromToken.getUserId());
+                    user.setUsername(userDataFromToken.getAccount()).setRealName(userDataFromToken.getFullname()).setIdentityNumber(userDataFromToken.getIdString()).setDeleteFlag(userDataFromToken.getIsDelete() == null || userDataFromToken.getIsDelete() ? 1 : 0).setId(userDataFromToken.getUserId());
                     // 密码
                     user.setPassword(userDataFromToken.getPassword());
-                    // 获取 用户单位（只获取主部门）
+                    // 获取 用户组织机构（只获取主部门）
                     if (CollectionUtils.isNotEmpty(userDataFromToken.getRelation())) {
                         // 主副部门（1：主部门；0：副部门）
                         SsoUserDTO.Relation relation = userDataFromToken.getRelation().stream().filter(item -> item.getPriOrgan() != null && item.getPriOrgan().equals(1)).findFirst().orElse(null);
                         if (relation != null && StringUtils.isNotBlank(relation.getOrganId())) {
-                            // 单位信息
-                            user.setUnitId(relation.getOrganId());
+                            // 组织机构信息
+                            user.setOrganizationId(relation.getOrganId());
                         }
                     }
                     // 添加或者更新 用户信息

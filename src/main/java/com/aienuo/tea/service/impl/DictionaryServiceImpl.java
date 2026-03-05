@@ -1,11 +1,11 @@
 package com.aienuo.tea.service.impl;
 
-import com.aienuo.tea.mapper.DictMapper;
-import com.aienuo.tea.model.dto.DictQueryDTO;
+import com.aienuo.tea.mapper.DictionaryMapper;
+import com.aienuo.tea.model.dto.DictionaryQueryDTO;
 import com.aienuo.tea.model.dto.OptionDTO;
-import com.aienuo.tea.model.po.Dict;
+import com.aienuo.tea.model.po.Dictionary;
 import com.aienuo.tea.model.vo.OptionVO;
-import com.aienuo.tea.service.IDictService;
+import com.aienuo.tea.service.IDictionaryService;
 import com.aienuo.tea.utils.BuildingTreeData;
 import com.aienuo.tea.utils.RequestDataHelper;
 import com.baomidou.dynamic.datasource.annotation.DS;
@@ -31,39 +31,39 @@ import java.util.List;
 @Slf4j
 @DS("master")
 @RequiredArgsConstructor
-public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements IDictService {
+public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Dictionary> implements IDictionaryService {
 
     /**
      * 数据字典 查询树形结构
      *
      * @param query - 查询参数
-     * @return List<Dict> - 数据字典
+     * @return List<Dictionary> - 数据字典
      */
     @Override
     @DS("master")
-    @Cacheable(cacheNames = "dict", keyGenerator = "redisKeyGenerator")
-    public List<Dict> queryDictList(final DictQueryDTO query) {
+    @Cacheable(cacheNames = "dictionary", keyGenerator = "redisKeyGenerator")
+    public List<Dictionary> queryDictionaryList(final DictionaryQueryDTO query) {
         try {
             // 设置表后缀名
             RequestDataHelper.setRequestData(new HashMap<>() {{
                 put("table_name", query.getType());
             }});
             // 查询数据
-            List<Dict> dictItemList = this.list(Wrappers.<Dict>lambdaQuery()
-                    .eq(StringUtils.isNotEmpty(query.getLabel()), Dict::getLabel, query.getLabel())
-                    .eq(StringUtils.isNotEmpty(query.getValue()), Dict::getValue, query.getValue())
+            List<Dictionary> dictionaryItemList = this.list(Wrappers.<Dictionary>lambdaQuery()
+                    .eq(StringUtils.isNotEmpty(query.getLabel()), Dictionary::getLabel, query.getLabel())
+                    .eq(StringUtils.isNotEmpty(query.getValue()), Dictionary::getValue, query.getValue())
             );
-            if (CollectionUtils.isNotEmpty(dictItemList)) {
+            if (CollectionUtils.isNotEmpty(dictionaryItemList)) {
                 if (StringUtils.isNotEmpty(query.getId())) {
-                    List<Dict> dataList = new ArrayList<>();
+                    List<Dictionary> dataList = new ArrayList<>();
                     // 构建数据
-                    new BuildingTreeData<Dict>().findAllData(Boolean.FALSE, dataList, query.getId(), dictItemList);
+                    new BuildingTreeData<Dictionary>().findAllData(Boolean.FALSE, dataList, query.getId(), dictionaryItemList);
                     return dataList;
                 } else {
-                    return new BuildingTreeData<Dict>().buildingTreeData(dictItemList);
+                    return new BuildingTreeData<Dictionary>().buildingTreeData(dictionaryItemList);
                 }
             }
-            return dictItemList;
+            return dictionaryItemList;
         } finally {
             // 清理数据
             RequestDataHelper.removeRequestData();
@@ -89,24 +89,24 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      * 数据字典 查询树形结构
      *
      * @param type - 类型名称
-     * @return List<Dict> - 数据字典
+     * @return List<Dictionary> - 数据字典
      */
     @Override
     @DS("master")
-    @Cacheable(cacheNames = "dict", key = "'dict_by_type_' + #type")
-    public List<Dict> queryDictList(final String type) {
+    @Cacheable(cacheNames = "dictionary", key = "'dict_by_type_' + #type")
+    public List<Dictionary> queryDictionaryList(final String type) {
         try {
             // 设置表后缀名
             RequestDataHelper.setRequestData(new HashMap<>() {{
                 put("table_name", type);
             }});
             // 查询数据
-            List<Dict> dictItemList = this.list();
-            if (CollectionUtils.isNotEmpty(dictItemList)) {
+            List<Dictionary> dictionaryItemList = this.list();
+            if (CollectionUtils.isNotEmpty(dictionaryItemList)) {
                 // 构建数据
-                return new BuildingTreeData<Dict>().buildingTreeData(dictItemList);
+                return new BuildingTreeData<Dictionary>().buildingTreeData(dictionaryItemList);
             }
-            return dictItemList;
+            return dictionaryItemList;
         } finally {
             // 清理数据
             RequestDataHelper.removeRequestData();
@@ -117,40 +117,40 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      * 数据字典 查询顶级 以及 所有的子级列表
      *
      * @param type - 类型名称
-     * @return List<Dict> - 数据字典
+     * @return List<Dictionary> - 数据字典
      */
     @Override
     @DS("master")
-    @Cacheable(cacheNames = "dict", key = "'dict_top_and_all_child_by_type_' + #type")
-    public List<Dict> queryDictTopAndAllChildList(final String type) {
+    @Cacheable(cacheNames = "dictionary", key = "'dict_top_and_all_child_by_type_' + #type")
+    public List<Dictionary> queryDictionaryTopAndAllChildList(final String type) {
         try {
             // 设置表后缀名
             RequestDataHelper.setRequestData(new HashMap<>() {{
                 put("table_name", type);
             }});
             // 查询数据
-            List<Dict> dictItemList = this.list();
-            if (CollectionUtils.isNotEmpty(dictItemList)) {
-                List<Dict> dataList = new ArrayList<>();
+            List<Dictionary> dictionaryItemList = this.list();
+            if (CollectionUtils.isNotEmpty(dictionaryItemList)) {
+                List<Dictionary> dataList = new ArrayList<>();
                 // 构建数据
-                dictItemList.stream()
+                dictionaryItemList.stream()
                         // 过滤出 顶级节点
                         .filter(item -> StringUtils.isEmpty(item.getParentId()) || StringPool.ZERO.equals(item.getParentId()))
                         // 排序
-                        .sorted(Comparator.comparingDouble(Dict::getSortNo))
+                        .sorted(Comparator.comparingDouble(Dictionary::getSortNo))
                         // 遍历顶级节点处理数据
                         .forEach(
                                 parent -> {
-                                    List<Dict> childList = new ArrayList<>();
+                                    List<Dictionary> childList = new ArrayList<>();
                                     // 查找指定节点及下所有子节点
-                                    new BuildingTreeData<Dict>().findAllData(Boolean.TRUE, childList, parent.getId(), dictItemList);
+                                    new BuildingTreeData<Dictionary>().findAllData(Boolean.TRUE, childList, parent.getId(), dictionaryItemList);
                                     parent.setChildren(childList);
                                     dataList.add(parent);
                                 }
                         );
                 return dataList;
             }
-            return dictItemList;
+            return dictionaryItemList;
         } finally {
             // 清理数据
             RequestDataHelper.removeRequestData();
@@ -162,39 +162,39 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      *
      * @param type  - 类型名称
      * @param value - 字典数值
-     * @return List<Dict> - 数据字典
+     * @return List<Dictionary> - 数据字典
      */
     @Override
     @DS("master")
-    @Cacheable(cacheNames = "dict", key = "'dict_list_by_type_' + #type + '_value_' + #value")
-    public List<Dict> queryDictListByValue(final String type, final String value) {
+    @Cacheable(cacheNames = "dictionary", key = "'dict_list_by_type_' + #type + '_value_' + #value")
+    public List<Dictionary> queryDictionaryListByValue(final String type, final String value) {
         try {
             // 设置表后缀名
             RequestDataHelper.setRequestData(new HashMap<>() {{
                 put("table_name", type);
             }});
             // 查询数据
-            List<Dict> dictItemList = this.list();
-            if (CollectionUtils.isNotEmpty(dictItemList)) {
-                List<Dict> dataList = new ArrayList<>();
+            List<Dictionary> dictionaryItemList = this.list();
+            if (CollectionUtils.isNotEmpty(dictionaryItemList)) {
+                List<Dictionary> dataList = new ArrayList<>();
                 // 构建数据
-                dictItemList.stream()
+                dictionaryItemList.stream()
                         // 过滤出 指定节点
                         .filter(item -> value.equals(item.getValue()))
                         // 排序
-                        .sorted(Comparator.comparingDouble(Dict::getSortNo))
+                        .sorted(Comparator.comparingDouble(Dictionary::getSortNo))
                         // 遍历顶级节点处理数据
                         .forEach(
                                 parent -> {
-                                    List<Dict> childList = new ArrayList<>();
+                                    List<Dictionary> childList = new ArrayList<>();
                                     // 查找指定节点及下所有子节点
-                                    new BuildingTreeData<Dict>().findAllData(Boolean.TRUE, childList, parent.getId(), dictItemList);
+                                    new BuildingTreeData<Dictionary>().findAllData(Boolean.TRUE, childList, parent.getId(), dictionaryItemList);
                                     dataList.addAll(childList);
                                 }
                         );
                 return dataList;
             }
-            return dictItemList;
+            return dictionaryItemList;
         } finally {
             // 清理数据
             RequestDataHelper.removeRequestData();
@@ -205,12 +205,12 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      * 数据字典 查询所有，不分层级
      *
      * @param type - 类型名称
-     * @return List<Dict> - 数据字典
+     * @return List<Dictionary> - 数据字典
      */
     @Override
     @DS("master")
-    @Cacheable(cacheNames = "dict", key = "'dict_all_by_type_' + #type")
-    public List<Dict> queryAllDictList(final String type) {
+    @Cacheable(cacheNames = "dictionary", key = "'dict_all_by_type_' + #type")
+    public List<Dictionary> queryAllDictionaryList(final String type) {
         try {
             // 设置表后缀名
             RequestDataHelper.setRequestData(new HashMap<>() {{

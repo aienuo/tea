@@ -8,12 +8,12 @@ import com.aienuo.tea.model.dto.ResetPasswordDTO;
 import com.aienuo.tea.model.dto.UserAddDTO;
 import com.aienuo.tea.model.dto.UserUpdateDTO;
 import com.aienuo.tea.model.po.Role;
-import com.aienuo.tea.model.po.Unit;
+import com.aienuo.tea.model.po.Organization;
 import com.aienuo.tea.model.po.User;
 import com.aienuo.tea.model.po.UserRole;
 import com.aienuo.tea.model.vo.UserPageVO;
 import com.aienuo.tea.service.IRoleService;
-import com.aienuo.tea.service.IUnitService;
+import com.aienuo.tea.service.IOrganizationService;
 import com.aienuo.tea.service.IUserRoleService;
 import com.aienuo.tea.service.IUserService;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -56,7 +56,7 @@ public class UserBusiness extends BaseBusiness {
     /**
      * 组织机构 服务类
      */
-    private final IUnitService unitService;
+    private final IOrganizationService organizationService;
 
     /**
      * 分页查询
@@ -65,11 +65,11 @@ public class UserBusiness extends BaseBusiness {
      * @return Page<UserPageVO> - 用户信息
      */
     public Page<UserPageVO> pagingQueryListByParameter(final PagingQueryUserDTO pagingQuery) {
-        // 查询 当前单位下所有单位信息 （包含自己）
-        List<Unit> unitList = this.unitService.queryAllUnitList(pagingQuery.getUnitId());
-        List<String> unitIdList = unitList.stream().map(Unit::getId).toList();
-        // 数据分析单位列表
-        pagingQuery.setUnitIdList(unitIdList);
+        // 查询 当前组织机构下所有组织机构信息 （包含自己）
+        List<Organization> organizationList = this.organizationService.queryAllOrganizationList(pagingQuery.getOrganizationId());
+        List<String> organizationIdList = organizationList.stream().map(Organization::getId).toList();
+        // 数据分析组织机构列表
+        pagingQuery.setOrganizationIdList(organizationIdList);
         // 查询数据
         Page<UserPageVO> pagingQueryList = this.userService.pagingQueryListByParameter(pagingQuery);
         if (CollectionUtils.isNotEmpty(pagingQueryList.getRecords())) {
@@ -83,8 +83,8 @@ public class UserBusiness extends BaseBusiness {
             List<UserRole> userRoleList = this.userRoleService.list(Wrappers.<UserRole>lambdaQuery().in(UserRole::getUserId, userIdList));
             // 角色集合
             Map<String, List<UserRole>> userRoleListMap = userRoleList.stream().collect(Collectors.groupingBy(UserRole::getUserId));
-            // 单位名称 Map
-            Map<String, String> unitMap = unitList.stream().collect(Collectors.toMap(Unit::getId, Unit::getName));
+            // 组织机构名称 Map
+            Map<String, String> organizationMap = organizationList.stream().collect(Collectors.toMap(Organization::getId, Organization::getName));
             // 建构数据
             pagingQueryList.getRecords().forEach(
                     data -> {
@@ -109,9 +109,9 @@ public class UserBusiness extends BaseBusiness {
                             );
                             data.setRoleList(roleList);
                         }
-                        // 单位信息
-                        if (unitMap.containsKey(data.getUnitId())) {
-                            data.setUnitName(unitMap.get(data.getUnitId()));
+                        // 组织机构信息
+                        if (organizationMap.containsKey(data.getOrganizationId())) {
+                            data.setOrganizationName(organizationMap.get(data.getOrganizationId()));
                         }
                     }
             );
@@ -217,7 +217,7 @@ public class UserBusiness extends BaseBusiness {
         ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(idList.size() == userList.size(), "用户", "请确认信息准确无误后重新操作");
         userList.forEach(
                 // 删除状态（0-正常，1-已删除）
-                user -> user.setDelFlag(Math.abs(user.getDelFlag() - 1))
+                user -> user.setDeleteFlag(Math.abs(user.getDeleteFlag() - 1))
         );
         boolean update = this.userService.updateBatchById(userList);
         ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(update, "用户", "请确认信息准确无误后重新操作");

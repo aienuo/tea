@@ -13,8 +13,8 @@
         <result column="USERNAME" property="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="REAL_NAME" property="realName" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="IDENTITY_NUMBER" property="identityNumber" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result column="UNIT_ID" property="unitId" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result column="DEL_FLAG" property="delFlag" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="ORGANIZATION_ID" property="organizationId" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="DELETE_FLAG" property="deleteFlag" javaType="java.lang.Integer" jdbcType="TINYINT"/>
     </resultMap>
 
     <!-- 分页查询 -->
@@ -24,16 +24,16 @@
             USERNAME,
             REAL_NAME,
             IDENTITY_NUMBER,
-            UNIT_ID,
-            DEL_FLAG
+            ORGANIZATION_ID,
+            DELETE_FLAG
         FROM
             <include refid="table_name"/>
         <where>
-            <!-- 数据分析单位列表（当前单位标识及所有子级单位标识） -->
-            <if test="param.unitIdList != null and !param.unitIdList.isEmpty()">
-                AND UNIT_ID IN
-                <foreach item="unitId" collection="param.unitIdList" open="(" separator="," close=")">
-                    #{unitId}
+            <!-- 数据分析组织机构列表（当前组织机构标识及所有子级组织机构标识） -->
+            <if test="param.organizationIdList != null and !param.organizationIdList.isEmpty()">
+                AND ORGANIZATION_ID IN
+                <foreach item="organizationId" collection="param.organizationIdList" open="(" separator="," close=")">
+                    #{organizationId}
                 </foreach>
             </if>
             <if test="param.id != null and param.id != '' ">
@@ -54,8 +54,8 @@
                 <bind name="identityNumberLike" value="'%' + param.identityNumber + '%'"/>
                 AND IDENTITY_NUMBER LIKE #{identityNumberLike}
             </if>
-            <if test="param.delFlag != null and param.delFlag != '' ">
-                AND DEL_FLAG = #{param.delFlag}
+            <if test="param.deleteFlag != null and param.deleteFlag != '' ">
+                AND DELETE_FLAG = #{param.deleteFlag}
             </if>
 
             <!-- 创建人 -->

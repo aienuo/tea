@@ -1,11 +1,11 @@
 package com.aienuo.tea.controller;
 
-import com.aienuo.tea.business.UnitBusiness;
+import com.aienuo.tea.business.OrganizationBusiness;
 import com.aienuo.tea.common.base.BaseController;
 import com.aienuo.tea.common.response.CommonResponse;
-import com.aienuo.tea.model.dto.UnitAddDTO;
-import com.aienuo.tea.model.dto.UnitUpdateDTO;
-import com.aienuo.tea.model.vo.UnitTreeVO;
+import com.aienuo.tea.model.dto.OrganizationAddDTO;
+import com.aienuo.tea.model.dto.OrganizationUpdateDTO;
+import com.aienuo.tea.model.vo.OrganizationTreeVO;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,30 +29,30 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/unit")
+@RequestMapping(path = "/organization")
 @Tag(name = "组织机构", description = "组织机构", extensions = {
         @Extension(properties = {@ExtensionProperty(name = "x-order", value = "2.1", parseValue = true)})
 })
-public class UnitController extends BaseController<UnitBusiness> {
+public class OrganizationController extends BaseController<OrganizationBusiness> {
 
     @GetMapping("/tree")
     @ApiOperationSupport(order = 1, author = "SanJin")
     @Operation(summary = "组织机构树查询", security = {@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)})
-    public CommonResponse<List<UnitTreeVO>> treeList() {
+    public CommonResponse<List<OrganizationTreeVO>> treeList() {
         return new CommonResponse<>(this.service.treeList());
     }
 
     @PostMapping(path = "/create")
     @ApiOperationSupport(order = 2, author = "SanJin")
     @Operation(summary = "组织机构添加", security = {@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)})
-    public CommonResponse<Boolean> create(@RequestBody @Valid UnitAddDTO create) {
+    public CommonResponse<Boolean> create(@RequestBody @Valid OrganizationAddDTO create) {
         return new CommonResponse<>(this.service.create(create));
     }
 
     @PutMapping(path = "/update")
     @Operation(summary = "组织机构更新", security = {@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)})
     @ApiOperationSupport(order = 3, author = "SanJin")
-    public CommonResponse<Boolean> update(@RequestBody @Valid UnitUpdateDTO update) {
+    public CommonResponse<Boolean> update(@RequestBody @Valid OrganizationUpdateDTO update) {
         return new CommonResponse<>(this.service.update(update));
     }
 

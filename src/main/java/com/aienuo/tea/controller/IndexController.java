@@ -2,19 +2,19 @@ package com.aienuo.tea.controller;
 
 import com.aienuo.tea.business.SecurityServiceImpl;
 import com.aienuo.tea.common.response.CommonResponse;
-import com.aienuo.tea.model.dto.DictQueryDTO;
+import com.aienuo.tea.model.dto.DictionaryQueryDTO;
 import com.aienuo.tea.model.dto.LoginDTO;
 import com.aienuo.tea.model.dto.OptionDTO;
 import com.aienuo.tea.model.dto.PagingQueryLogDTO;
-import com.aienuo.tea.model.po.Dict;
-import com.aienuo.tea.model.po.Unit;
+import com.aienuo.tea.model.po.Dictionary;
+import com.aienuo.tea.model.po.Organization;
 import com.aienuo.tea.model.po.User;
 import com.aienuo.tea.model.vo.LogVO;
 import com.aienuo.tea.model.vo.OptionVO;
 import com.aienuo.tea.model.vo.RedisMonitorVO;
-import com.aienuo.tea.service.IDictService;
+import com.aienuo.tea.service.IDictionaryService;
 import com.aienuo.tea.service.ILogService;
-import com.aienuo.tea.service.IUnitService;
+import com.aienuo.tea.service.IOrganizationService;
 import com.aienuo.tea.utils.SecurityFrameworkUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -59,12 +59,12 @@ public class IndexController {
     /**
      * 组织机构 服务类
      */
-    private final IUnitService unitService;
+    private final IOrganizationService organizationService;
 
     /**
      * 数据字典 服务类
      */
-    private final IDictService dictService;
+    private final IDictionaryService dictionaryService;
 
     /**
      * 系统日志 服务类
@@ -114,14 +114,14 @@ public class IndexController {
         return new CommonResponse<>(user);
     }
 
-    @GetMapping("/unit/tree")
+    @GetMapping("/organization/tree")
     @ApiOperationSupport(order = 6, author = "SanJin")
     @Operation(summary = "获取组织机构树", description = "获取组织机构树", security = {@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)})
     @Parameters({
-            @Parameter(name = "unitId", description = "单位标识"),
+            @Parameter(name = "organizationId", description = "组织机构标识"),
     })
-    public CommonResponse<List<Unit>> unitTree(@RequestParam("unitId") String unitId) {
-        return new CommonResponse<>(this.unitService.unitTree(unitId));
+    public CommonResponse<List<Organization>> organizationTree(@RequestParam("organizationId") String organizationId) {
+        return new CommonResponse<>(this.organizationService.organizationTree(organizationId));
     }
 
     @GetMapping("/dic/type")
@@ -130,15 +130,15 @@ public class IndexController {
             summary = "获取字典类型", description = "获取字典类型"
             , security = {@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)}
     )
-    public CommonResponse<List<OptionVO>> queryDic(OptionDTO query) {
-        return new CommonResponse<>(this.dictService.queryTableItemList(query));
+    public CommonResponse<List<OptionVO>> queryDictionary(OptionDTO query) {
+        return new CommonResponse<>(this.dictionaryService.queryTableItemList(query));
     }
 
     @GetMapping("/dic/item")
     @ApiOperationSupport(order = 8, author = "SanJin")
     @Operation(summary = "数据字典查询", description = "数据字典查询", security = {@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)})
-    public CommonResponse<List<Dict>> queryDic(@Valid DictQueryDTO query) {
-        return new CommonResponse<>(this.dictService.queryDictList(query));
+    public CommonResponse<List<Dictionary>> queryDictionary(@Valid DictionaryQueryDTO query) {
+        return new CommonResponse<>(this.dictionaryService.queryDictionaryList(query));
     }
 
     @GetMapping("/log/page")

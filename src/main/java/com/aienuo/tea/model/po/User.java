@@ -53,8 +53,8 @@ public class User extends BaseEntity implements UserDetails {
     /**
      * 组织机构标识
      */
-    @TableField(value = "unit_id")
-    private String unitId;
+    @TableField(value = "organization_id")
+    private String organizationId;
 
     /**
      * 删除状态（0-正常，1-已删除）
@@ -62,8 +62,8 @@ public class User extends BaseEntity implements UserDetails {
      *
      * @TableLogic(value = "0")
      */
-    @TableField(value = "del_flag")
-    private Integer delFlag;
+    @TableField(value = "delete_flag")
+    private Integer deleteFlag;
 
 
     @JsonIgnore
@@ -80,7 +80,7 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
-        return this.delFlag == 0;
+        return this.deleteFlag == 0;
     }
 
     /**
@@ -91,7 +91,7 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
-        return this.delFlag == 0;
+        return this.deleteFlag == 0;
     }
 
     /**
@@ -113,7 +113,7 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return this.delFlag == 0;
+        return this.deleteFlag == 0;
     }
 
 }

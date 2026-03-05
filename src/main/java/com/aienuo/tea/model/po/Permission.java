@@ -61,6 +61,6 @@ public class Permission extends BaseTree<Permission> implements Serializable {
      * @TableLogic(value = "0")
      */
     @TableField(value = "LJSC")
-    private Integer delFlag;
+    private Integer deleteFlag;
 
 }

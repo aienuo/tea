@@ -89,7 +89,7 @@
     </select>
 
     <!-- 角色下拉列表 -->
-    <select id="list" resultMap="com.aienuo.tea.mapper.DictMapper.listQuery">
+    <select id="list" resultMap="com.aienuo.tea.mapper.DictionaryMapper.listQuery">
         SELECT
             ID AS value
             , MC AS label

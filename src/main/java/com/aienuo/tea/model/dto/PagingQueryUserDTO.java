@@ -23,11 +23,11 @@ public class PagingQueryUserDTO extends BasePageDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 单位标识
+     * 组织机构标识
      */
-    @Schema(description = "单位标识")
-    @NotBlank(message = "单位标识不能为空")
-    private String unitId;
+    @Schema(description = "组织机构标识")
+    @NotBlank(message = "组织机构标识不能为空")
+    private String organizationId;
 
     /**
      * 用户标识
@@ -57,13 +57,13 @@ public class PagingQueryUserDTO extends BasePageDTO implements Serializable {
      * 删除状态（0-正常，1-已删除）
      */
     @Schema(description = "删除状态（0-正常，1-已删除）")
-    private Integer delFlag;
+    private Integer deleteFlag;
 
     /**
-     * 数据分析单位列表
+     * 数据分析组织机构列表
      */
-    @Schema(description = "数据分析单位列表（当前单位标识及所有子级单位标识）", hidden = true)
+    @Schema(description = "数据分析组织机构列表（当前组织机构标识及所有子级组织机构标识）", hidden = true)
     @Getter
-    private List<String> unitIdList;
+    private List<String> organizationIdList;
 
 }

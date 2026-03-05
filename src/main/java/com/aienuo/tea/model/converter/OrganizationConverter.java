@@ -1,8 +1,8 @@
 package com.aienuo.tea.model.converter;
 
-import com.aienuo.tea.model.dto.UnitAddDTO;
-import com.aienuo.tea.model.dto.UnitUpdateDTO;
-import com.aienuo.tea.model.po.Unit;
+import com.aienuo.tea.model.dto.OrganizationAddDTO;
+import com.aienuo.tea.model.dto.OrganizationUpdateDTO;
+import com.aienuo.tea.model.po.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -13,19 +13,19 @@ import org.mapstruct.factory.Mappers;
  * 组织机构转换类
  */
 @Mapper
-public interface UnitConverter {
+public interface OrganizationConverter {
 
     /**
      * 系统组织机构 实例
      */
-    UnitConverter INSTANCE = Mappers.getMapper(UnitConverter.class);
+    OrganizationConverter INSTANCE = Mappers.getMapper(OrganizationConverter.class);
 
     /**
      * DTO 转 PO
      * 将添加对象生成新的数据库对象
      *
      * @param add - 组织机构添加对象
-     * @return Unit - 数据库对象
+     * @return Organization - 数据库对象
      */
     @Mappings({
             @Mapping(target = "id", ignore = true),
@@ -35,7 +35,7 @@ public interface UnitConverter {
             @Mapping(target = "updateTime", ignore = true),
             @Mapping(target = "children", ignore = true),
     })
-    Unit getAddEntity(final UnitAddDTO add);
+    Organization getAddEntity(final OrganizationAddDTO add);
 
     /**
      * DTO 合并到 PO
@@ -52,6 +52,6 @@ public interface UnitConverter {
             @Mapping(target = "updateTime", ignore = true, expression = "java(null)"),
             @Mapping(target = "children", ignore = true),
     })
-    void getUpdateEntity(@MappingTarget final Unit permission, final UnitUpdateDTO update);
+    void getUpdateEntity(@MappingTarget final Organization permission, final OrganizationUpdateDTO update);
 
 }

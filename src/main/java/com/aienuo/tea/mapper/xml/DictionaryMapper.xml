@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aienuo.tea.mapper.DictMapper">
+<mapper namespace="com.aienuo.tea.mapper.DictionaryMapper">
 
     <!-- 字典 - 项 - 数据列表 - 查询返回值 -->
     <resultMap id="listQuery" type="com.aienuo.tea.model.vo.OptionVO">

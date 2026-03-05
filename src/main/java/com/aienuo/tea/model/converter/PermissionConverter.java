@@ -34,7 +34,7 @@ public interface PermissionConverter {
             @Mapping(target = "updaterBy", ignore = true),
             @Mapping(target = "updateTime", ignore = true),
             @Mapping(target = "children", ignore = true),
-            @Mapping(target = "delFlag", constant = "0"),
+            @Mapping(target = "deleteFlag", constant = "0"),
     })
     Permission getAddEntity(final PermissionAddDTO add);
 
@@ -51,7 +51,7 @@ public interface PermissionConverter {
             @Mapping(target = "createTime", ignore = true),
             @Mapping(target = "updaterBy", ignore = true, expression = "java(null)"),
             @Mapping(target = "updateTime", ignore = true, expression = "java(null)"),
-            @Mapping(target = "delFlag", ignore = true),
+            @Mapping(target = "deleteFlag", ignore = true),
             @Mapping(target = "children", ignore = true),
     })
     void getUpdateEntity(@MappingTarget final Permission permission, final PermissionUpdateDTO update);

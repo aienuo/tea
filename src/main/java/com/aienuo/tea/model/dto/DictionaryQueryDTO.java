@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Data
 @Schema(description = "数据字典查询")
-public class DictQueryDTO implements Serializable {
+public class DictionaryQueryDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

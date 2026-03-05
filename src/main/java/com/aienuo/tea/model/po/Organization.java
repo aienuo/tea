@@ -1,8 +1,9 @@
-package com.aienuo.tea.model.vo;
+package com.aienuo.tea.model.po;
 
 import com.aienuo.tea.common.base.BaseTree;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -12,15 +13,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 组织机构 - 树查询
-
+ * 组织机构
  */
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = false)
-@JsonIgnoreProperties(ignoreUnknown = true)
-@Schema(description = "组织机构 - 树查询返回值")
-public class UnitTreeVO extends BaseTree<UnitTreeVO> implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+@TableName("SYS_ORGANIZATION")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Organization extends BaseTree<Organization> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,55 +28,67 @@ public class UnitTreeVO extends BaseTree<UnitTreeVO> implements Serializable {
     /**
      * 番号
      */
-    @Schema(description = "番号")
+    @TableField(value = "BDFH")
     private String name;
 
     /**
      * 简称
      */
-    @Schema(description = "简称")
+    @TableField(value = "BDJC")
     private String abbreviation;
 
     /**
      * 战区内码
      */
-    @Schema(description = "战区内码")
+    @TableField(value = "ZQNM")
     private String warZone;
 
     /**
      * 兵种内码
      */
-    @Schema(description = "兵种内码")
+    @TableField(value = "BZNM")
     private String militaryBranch;
+
+    /**
+     * 类型
+     */
+    @TableField(value = "BDLX")
+    private String type;
+
+    /**
+     * 级别
+     */
+    @TableField(value = "BDJB")
+    private String grade;
 
     /**
      * 经度
      */
-    @Schema(description = "经度")
+    @TableField(value = "ZBJD")
     private BigDecimal longitude;
 
     /**
      * 纬度
      */
-    @Schema(description = "纬度")
+    @TableField(value = "ZBWD")
     private BigDecimal latitude;
 
     /**
      * 海拔
      */
-    @Schema(description = "海拔")
+    @TableField(value = "ZBHB")
     private BigDecimal altitude;
 
     /**
      * 地名内码
      */
-    @Schema(description = "地名内码")
+    @TableField(value = "DMNM")
     private String areaCode;
 
     /**
      * 详细地址
      */
-    @Schema(description = "详细地址")
+    @TableField(value = "XXDZ")
     private String address;
 
 }

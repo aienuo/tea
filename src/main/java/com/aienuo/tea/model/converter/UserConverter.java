@@ -38,7 +38,7 @@ public interface UserConverter {
             @Mapping(target = "updaterBy", ignore = true),
             @Mapping(target = "updateTime", ignore = true),
             @Mapping(target = "password", ignore = true),
-            @Mapping(target = "delFlag", constant = "0"),
+            @Mapping(target = "deleteFlag", constant = "0"),
             @Mapping(target = "authorities", ignore = true),
     })
     User getAddEntity(final UserAddDTO add);
@@ -60,7 +60,7 @@ public interface UserConverter {
             @Mapping(target = "password", ignore = true),
             @Mapping(target = "authorities", ignore = true),
             @Mapping(target = "identityNumber", ignore = true),
-            @Mapping(target = "delFlag", ignore = true),
+            @Mapping(target = "deleteFlag", ignore = true),
     })
     void getUpdateEntity(@MappingTarget final User user, final UserUpdateDTO update);
 

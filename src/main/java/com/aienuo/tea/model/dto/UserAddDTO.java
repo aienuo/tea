@@ -57,12 +57,12 @@ public class UserAddDTO implements Serializable {
     private String identityNumber;
 
     /**
-     * 单位标识
+     * 组织机构标识
      */
-    @Schema(description = "单位标识", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "单位标识不能为空")
-    @Pattern(regexp = "^(?!\s*$)(?!.*\s)(?!null$)[^\s]+$", message = "单位标识不能为空")
-    private String unitId;
+    @Schema(description = "组织机构标识", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "组织机构标识不能为空")
+    @Pattern(regexp = "^(?!\s*$)(?!.*\s)(?!null$)[^\s]+$", message = "组织机构标识不能为空")
+    private String organizationId;
 
     /**
      * 角色列表

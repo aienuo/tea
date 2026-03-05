@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aienuo.tea.mapper.UnitMapper">
+<mapper namespace="com.aienuo.tea.mapper.OrganizationMapper">
 
     <!-- 数据表名称 -->
     <sql id="table_name">
-        SYS_UNIT
+        SYS_ORGANIZATION
     </sql>
 
     <!-- 树查询 - 查询返回值 -->
-    <resultMap id="listQuery" type="com.aienuo.tea.model.vo.UnitTreeVO">
+    <resultMap id="listQuery" type="com.aienuo.tea.model.vo.OrganizationTreeVO">
         <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="SORT_NO" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
         <result column="PARENT_ID" property="parentId" javaType="java.lang.String" jdbcType="VARCHAR"/>

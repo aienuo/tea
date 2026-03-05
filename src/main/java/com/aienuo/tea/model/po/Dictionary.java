@@ -19,7 +19,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @TableName("SYS_DICT_ITEM_")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Dict extends BaseTree<Dict> implements Serializable {
+public class Dictionary extends BaseTree<Dictionary> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

@@ -11,22 +11,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 组织机构 - 更新参数
+ * 组织机构 - 添加参数
  */
 @Data
-@Schema(description = "组织机构 - 更新参数")
+@Schema(description = "组织机构 - 添加参数")
 @EqualsAndHashCode(callSuper = false)
-public class UnitUpdateDTO implements Serializable {
+public class OrganizationAddDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 组织机构标识
-     */
-    @Schema(description = "组织机构标识", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "组织机构标识不能为空")
-    private String id;
 
     /**
      * 组织机构排序
@@ -54,6 +47,20 @@ public class UnitUpdateDTO implements Serializable {
     @Schema(description = "简称", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "简称不能为空")
     private String abbreviation;
+
+    /**
+     * 类型
+     */
+    @Schema(description = "类型", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "类型不能为空")
+    private String type;
+
+    /**
+     * 级别
+     */
+    @Schema(description = "级别", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "级别不能为空")
+    private String grade;
 
     /**
      * 战区内码
@@ -102,5 +109,5 @@ public class UnitUpdateDTO implements Serializable {
      */
     @Schema(description = "详细地址")
     private String address;
-    
+
 }
