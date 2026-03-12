@@ -17,9 +17,9 @@
         <result column="ZQNM" property="warZone" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="BZNM" property="militaryBranch" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="DMNM" property="areaCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result column="ZBJD" property="longitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-        <result column="ZBWD" property="latitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-        <result column="ZBHB" property="altitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result column="ZBJD" property="longitude" javaType="java.lang.Double" jdbcType="DECIMAL"/>
+        <result column="ZBWD" property="latitude" javaType="java.lang.Double" jdbcType="DECIMAL"/>
+        <result column="ZBHB" property="altitude" javaType="java.lang.Double" jdbcType="DECIMAL"/>
         <result column="XXDZ" property="address" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 

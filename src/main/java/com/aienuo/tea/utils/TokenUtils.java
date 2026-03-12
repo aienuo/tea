@@ -125,7 +125,7 @@ public class TokenUtils {
         try {
             String id = token.split("-")[1];
             String decrypt = sm2Decrypt(id);
-            decrypt = StringUtils.replace(decrypt, "_", ":");
+            decrypt = StringUtils.replaceChars(decrypt, "_", ":");
             return decrypt.split(":")[2];
         } catch (Exception e) {
             log.error("解析 用户名 异常： {}", e.getMessage(), e);

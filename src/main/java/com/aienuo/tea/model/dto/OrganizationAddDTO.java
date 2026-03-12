@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 组织机构 - 添加参数
@@ -81,21 +80,21 @@ public class OrganizationAddDTO implements Serializable {
      */
     @Schema(description = "经度", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "经度不能为空")
-    private BigDecimal longitude;
+    private Double longitude;
 
     /**
      * 纬度
      */
     @Schema(description = "纬度", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "纬度不能为空")
-    private BigDecimal latitude;
+    private Double latitude;
 
     /**
      * 海拔
      */
     @Schema(description = "海拔", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "海拔不能为空")
-    private BigDecimal altitude;
+    private Double altitude;
 
     /**
      * 地名内码

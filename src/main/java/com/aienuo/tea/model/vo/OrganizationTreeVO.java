@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 组织机构 - 树查询
@@ -53,19 +52,19 @@ public class OrganizationTreeVO extends BaseTree<OrganizationTreeVO> implements 
      * 经度
      */
     @Schema(description = "经度")
-    private BigDecimal longitude;
+    private Double longitude;
 
     /**
      * 纬度
      */
     @Schema(description = "纬度")
-    private BigDecimal latitude;
+    private Double latitude;
 
     /**
      * 海拔
      */
     @Schema(description = "海拔")
-    private BigDecimal altitude;
+    private Double altitude;
 
     /**
      * 地名内码

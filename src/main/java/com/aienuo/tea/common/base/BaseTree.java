@@ -2,6 +2,7 @@ package com.aienuo.tea.common.base;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BaseTree<T> extends BaseEntity implements Serializable {
+public class BaseTree<T extends Model<T>> extends BaseEntity<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

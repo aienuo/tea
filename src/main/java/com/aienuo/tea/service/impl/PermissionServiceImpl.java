@@ -37,7 +37,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         List<PermissionTreeVO> list = this.baseMapper.queryList();
         if (CollectionUtils.isNotEmpty(list)) {
             // 2、构建树形数据
-            return new BuildingTreeData().buildingTreeData(list);
+            return new BuildingTreeData<PermissionTreeVO>().buildingTreeData(list);
         }
         return list;
     }

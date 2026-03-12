@@ -1,6 +1,8 @@
 package com.aienuo.tea;
 
+import com.aienuo.tea.common.base.BaseCoordinate;
 import com.aienuo.tea.model.po.Log;
+import com.aienuo.tea.utils.BuildingCoordinateRangeData;
 import com.aienuo.tea.utils.LatchUtils;
 import com.aienuo.tea.utils.TokenUtils;
 import com.baomidou.mybatisplus.core.toolkit.AES;
@@ -15,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -89,7 +93,7 @@ class TeaApplicationTests {
      */
     private void passwordTest() {
 
-        String input = "password02!";
+        String input = "admin";
         log.info("输入内容： {}", input);
 
         String base64 = Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));
@@ -175,13 +179,55 @@ class TeaApplicationTests {
     }
 
     /**
+     * 坐标范围测试
+     */
+    private void coordinateTest() {
+
+        BaseCoordinate center = new BaseCoordinate();
+        // 纬度
+        center.setLatitude(30.0d);
+        // 经度
+        center.setLongitude(120.0d);
+        // 海拔
+        center.setAltitude(0.0d);
+        // 半径（千米）
+        double radius = 100d;
+        log.info("输入中心点坐标： {}， 范围：{}（千米）", center, radius);
+        BuildingCoordinateRangeData.CoordinateExtremum coordinateExtremum = new BuildingCoordinateRangeData<>().getCoordinateExtremum(center, radius);
+        log.info("十进制坐标指定范围的极值： {}", coordinateExtremum);
+        // 待处理数据
+        List<BaseCoordinate> list = new ArrayList<>();
+        for (double i = 3.85; i < 53.56; i += 0.5) {
+            for (double j = 73.38; j < 135.04; j += 0.5) {
+                /**
+                 * 最北端 53.56° N 最南端 3.85° N
+                 * 最西端 73.38° E 最东端 135.04° E
+                 */
+                BaseCoordinate item = new BaseCoordinate();
+                // 纬度
+                item.setLatitude(i);
+                // 经度
+                item.setLongitude(j);
+                // 海拔
+                item.setAltitude(0.0d);
+                list.add(item);
+            }
+        }
+        log.info("十进制坐标数据集合（{}个）： {}", list.size(), list);
+        // 处理数据
+        List<BaseCoordinate> data = new BuildingCoordinateRangeData<>().buildingCoordinateRangeData(center, radius, list);
+        log.info("处理后的数据集合（{}个）： {}", data.size(), data);
+    }
+
+    /**
      * 数据库配置 加密
      */
     public static void main(String[] args) {
-        new TeaApplicationTests().tokenUtilTest();
+        /*new TeaApplicationTests().tokenUtilTest();
         new TeaApplicationTests().databasePropertiesEncrypt();
         new TeaApplicationTests().passwordTest();
-        new TeaApplicationTests().testLatchUtils();
+        new TeaApplicationTests().testLatchUtils();*/
+        new TeaApplicationTests().coordinateTest();
     }
 
 	/*@RestController

@@ -41,7 +41,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         List<OrganizationTreeVO> list = this.baseMapper.queryList();
         if (CollectionUtils.isNotEmpty(list)) {
             // 2、构建树形数据
-            return new BuildingTreeData().buildingTreeData(list);
+            return new BuildingTreeData<OrganizationTreeVO>().buildingTreeData(list);
         }
         return list;
     }
@@ -58,10 +58,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public List<Organization> organizationTree(final String id) {
         if (StringUtils.isNotEmpty(id) && !StringPool.ZERO.equals(id)) {
             // 查找指定 组织机构 下属所有 下级组织机构
-            return new BuildingTreeData().buildingTreeData(id, this.list());
+            return new BuildingTreeData<Organization>().buildingTreeData(id, this.list());
         }
         // 所有组织机构数据
-        return new BuildingTreeData().buildingTreeData(this.list());
+        return new BuildingTreeData<Organization>().buildingTreeData(this.list());
     }
 
     /**

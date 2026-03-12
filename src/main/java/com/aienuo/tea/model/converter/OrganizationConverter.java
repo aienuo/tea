@@ -41,8 +41,8 @@ public interface OrganizationConverter {
      * DTO 合并到 PO
      * 将更新对象与数据库对象合并成新的数据库更新对象
      *
-     * @param update     - 组织机构更新对象
-     * @param permission - 数据库对象
+     * @param update       - 组织机构更新对象
+     * @param organization - 数据库对象
      */
     @Mappings({
             @Mapping(target = "id", ignore = true),
@@ -52,6 +52,6 @@ public interface OrganizationConverter {
             @Mapping(target = "updateTime", ignore = true, expression = "java(null)"),
             @Mapping(target = "children", ignore = true),
     })
-    void getUpdateEntity(@MappingTarget final Organization permission, final OrganizationUpdateDTO update);
+    void getUpdateEntity(@MappingTarget final Organization organization, final OrganizationUpdateDTO update);
 
 }

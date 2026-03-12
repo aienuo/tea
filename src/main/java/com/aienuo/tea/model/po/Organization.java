@@ -10,7 +10,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 组织机构
@@ -65,19 +64,19 @@ public class Organization extends BaseTree<Organization> implements Serializable
      * 经度
      */
     @TableField(value = "ZBJD")
-    private BigDecimal longitude;
+    private Double longitude;
 
     /**
      * 纬度
      */
     @TableField(value = "ZBWD")
-    private BigDecimal latitude;
+    private Double latitude;
 
     /**
      * 海拔
      */
     @TableField(value = "ZBHB")
-    private BigDecimal altitude;
+    private Double altitude;
 
     /**
      * 地名内码

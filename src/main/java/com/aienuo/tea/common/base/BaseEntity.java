@@ -36,12 +36,14 @@ public abstract class BaseEntity<T extends Model<T>> extends Model<T> implements
     @TableId(value = "ID", type = IdType.ASSIGN_ID)
     @Schema( description = "标识")
     private String id;
+
     /**
      * 创建人 creator_by
      */
     @Schema(description = "创建人")
     @TableField(value = "CREATOR_BY", fill = FieldFill.INSERT)
     private String creatorBy;
+
     /**
      * 创建时间 create_time
      */
@@ -52,12 +54,14 @@ public abstract class BaseEntity<T extends Model<T>> extends Model<T> implements
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+
     /**
      * 更新人  updater_by
      */
     @Schema(description = "更新人")
     @TableField(value = "UPDATER_BY", fill = FieldFill.UPDATE)
     private String updaterBy;
+
     /**
      * 更新时间（乐观锁）    update_time
      */
