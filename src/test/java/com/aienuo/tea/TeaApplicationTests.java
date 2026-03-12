@@ -44,7 +44,7 @@ class TeaApplicationTests {
      * 向 "/index" 地址发送请求，并打印返回结果
      */
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
 
         ResponseEntity<String> response = this.restTemplate.getForEntity("http://localhost:" + port + "/index", String.class, "");
 
@@ -183,7 +183,7 @@ class TeaApplicationTests {
      */
     private void coordinateTest() {
 
-        BaseCoordinate center = new BaseCoordinate();
+        BaseCoordinate center = new BaseCoordinate<>();
         // 纬度
         center.setLatitude(30.0d);
         // 经度
@@ -223,10 +223,10 @@ class TeaApplicationTests {
      * 数据库配置 加密
      */
     public static void main(String[] args) {
-        /*new TeaApplicationTests().tokenUtilTest();
+        new TeaApplicationTests().tokenUtilTest();
         new TeaApplicationTests().databasePropertiesEncrypt();
         new TeaApplicationTests().passwordTest();
-        new TeaApplicationTests().testLatchUtils();*/
+        new TeaApplicationTests().testLatchUtils();
         new TeaApplicationTests().coordinateTest();
     }
 

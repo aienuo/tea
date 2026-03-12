@@ -25,7 +25,7 @@ public class TokenUtils {
     /**
      * SM2 密码
      */
-    private static final SM2Cipher sm2Cipher;
+    private static final SM2Cipher SM2_CIPHER;
 
     static {
         // 公钥
@@ -33,7 +33,7 @@ public class TokenUtils {
         // 私钥
         String privateKey = "03ace564b89ae0f2ebf11a7b227c5fd960bf4a04d5d3ceeb964cc87f257460b6";
         // SM2 密码 Cipher
-        sm2Cipher = new SM2Cipher(publicKey, privateKey);
+        SM2_CIPHER = new SM2Cipher(publicKey, privateKey);
     }
 
     /**
@@ -43,7 +43,7 @@ public class TokenUtils {
      * @return String - 加密后数据
      */
     public static String sm2Encrypt(final String data) {
-        return sm2Cipher.encrypt2Hex(data);
+        return SM2_CIPHER.encrypt2Hex(data);
     }
 
     /**
@@ -53,7 +53,7 @@ public class TokenUtils {
      * @return String - 解密后数据
      */
     public static String sm2Decrypt(final String data) {
-        return new String(sm2Cipher.decrypt(data), StandardCharsets.UTF_8);
+        return new String(SM2_CIPHER.decrypt(data), StandardCharsets.UTF_8);
     }
 
     /**
@@ -63,7 +63,7 @@ public class TokenUtils {
      * @return String - 加密后数据
      */
     public static String sm2EncryptForJavaScript(final String data) {
-        return sm2Cipher.encrypt2HexForJavascript(data);
+        return SM2_CIPHER.encrypt2HexForJavascript(data);
     }
 
     /**
@@ -73,7 +73,7 @@ public class TokenUtils {
      * @return String - 解密后数据
      */
     public static String sm2DecryptFromJavaScript(final String data) {
-        return sm2Cipher.decryptFromJavascript(data);
+        return SM2_CIPHER.decryptFromJavascript(data);
     }
 
     /**
