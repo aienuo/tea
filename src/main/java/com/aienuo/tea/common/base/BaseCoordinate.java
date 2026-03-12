@@ -1,7 +1,6 @@
 package com.aienuo.tea.common.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,7 +32,7 @@ import java.io.Serializable;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class BaseCoordinate<T extends Model<T>> extends BaseEntity<T> implements Serializable {
+public class BaseCoordinate<T extends BaseEntity<T>> extends BaseEntity<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

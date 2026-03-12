@@ -1,7 +1,7 @@
 package com.aienuo.tea;
 
-import com.aienuo.tea.common.base.BaseCoordinate;
 import com.aienuo.tea.model.po.Log;
+import com.aienuo.tea.model.vo.OrganizationCoordinateVO;
 import com.aienuo.tea.utils.BuildingCoordinateRangeData;
 import com.aienuo.tea.utils.LatchUtils;
 import com.aienuo.tea.utils.TokenUtils;
@@ -183,7 +183,7 @@ class TeaApplicationTests {
      */
     private void coordinateTest() {
 
-        BaseCoordinate center = new BaseCoordinate<>();
+        OrganizationCoordinateVO center = new OrganizationCoordinateVO();
         // 纬度
         center.setLatitude(30.0d);
         // 经度
@@ -192,18 +192,22 @@ class TeaApplicationTests {
         center.setAltitude(0.0d);
         // 半径（千米）
         double radius = 100d;
-        log.info("输入中心点坐标： {}， 范围：{}（千米）", center, radius);
-        BuildingCoordinateRangeData.CoordinateExtremum coordinateExtremum = new BuildingCoordinateRangeData<>().getCoordinateExtremum(center, radius);
+        log.info("经度：{}° E，纬度：{}° N， 范围：{}（千米）", center.getLongitude(), center.getLatitude(), radius);
+        BuildingCoordinateRangeData.CoordinateExtremum coordinateExtremum = new BuildingCoordinateRangeData<OrganizationCoordinateVO>().getCoordinateExtremum(center, radius);
         log.info("十进制坐标指定范围的极值： {}", coordinateExtremum);
         // 待处理数据
-        List<BaseCoordinate> list = new ArrayList<>();
+        List<OrganizationCoordinateVO> list = new ArrayList<>();
+        int k = 1;
         for (double i = 3.85; i < 53.56; i += 0.5) {
             for (double j = 73.38; j < 135.04; j += 0.5) {
+                k++;
                 /**
                  * 最北端 53.56° N 最南端 3.85° N
                  * 最西端 73.38° E 最东端 135.04° E
                  */
-                BaseCoordinate item = new BaseCoordinate();
+                OrganizationCoordinateVO item = new OrganizationCoordinateVO();
+                item.setId(String.valueOf(k));
+                item.setParentId(String.valueOf(k % 10));
                 // 纬度
                 item.setLatitude(i);
                 // 经度
@@ -213,10 +217,13 @@ class TeaApplicationTests {
                 list.add(item);
             }
         }
-        log.info("十进制坐标数据集合（{}个）： {}", list.size(), list);
+        log.info("十进制坐标数据集合（{}个）}", list.size());
         // 处理数据
-        List<BaseCoordinate> data = new BuildingCoordinateRangeData<>().buildingCoordinateRangeData(center, radius, list);
-        log.info("处理后的数据集合（{}个）： {}", data.size(), data);
+        List<OrganizationCoordinateVO> data = new BuildingCoordinateRangeData<OrganizationCoordinateVO>().buildingCoordinateRangeData(center, radius, list);
+        log.info("处理后的数据集合（{}个）", data.size());
+        for (OrganizationCoordinateVO item : data) {
+            log.info("id： {}，parent：{}，经度：{}，纬度：{}", item.getId(), item.getParentId(), item.getLongitude(), item.getLatitude());
+        }
     }
 
     /**

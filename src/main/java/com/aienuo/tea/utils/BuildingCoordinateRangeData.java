@@ -19,7 +19,7 @@ import java.util.List;
  * <li>3、调用 buildingCoordinateRangeData 方法 将 中心点、半径（千米）、符合条件的 十进制坐标集合 放入，即可获取 最终符合条件的 十进制坐标集合，同时也计算出距离（距离 中心点（center） 直线距离（distance））</li>
  * </p>
  */
-public class BuildingCoordinateRangeData<T extends BaseCoordinate> {
+public class BuildingCoordinateRangeData<T extends BaseCoordinate<T>> {
 
     /**
      * 地球平均半径（千米）
