@@ -99,11 +99,22 @@ public class BuildingCoordinateRangeData<T extends BaseCoordinate<T>> {
     public List<T> buildingCoordinateRangeData(final T center, final Double radius, final List<T> list) {
         List<T> dataList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
-            // 过滤出范围内的数据
-            dataList = list.stream().filter(target -> this.computeDistance(center, target) <= radius)
-                    // 依据距离远近 排序
-                    .sorted(Comparator.comparingDouble(T::getDistance))
-                    .toList();
+            if (radius <= 0) {
+                return dataList;
+            }
+            if (list.size() > 10000) {
+                // 如果数据量过大，使用并行流 (Parallel Stream，对于包含 IO、阻塞操作或小数据量的任务请谨慎使用)
+                dataList = list.parallelStream().filter(target -> this.computeDistance(center, target) <= radius)
+                        // 依据距离远近 排序
+                        .sorted(Comparator.comparingDouble(T::getDistance))
+                        .toList();
+            } else {
+                // 过滤出范围内的数据
+                dataList = list.stream().filter(target -> this.computeDistance(center, target) <= radius)
+                        // 依据距离远近 排序
+                        .sorted(Comparator.comparingDouble(T::getDistance))
+                        .toList();
+            }
         }
         return dataList;
     }
