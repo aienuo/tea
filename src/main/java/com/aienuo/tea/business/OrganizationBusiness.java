@@ -12,6 +12,7 @@ import com.aienuo.tea.service.IOrganizationService;
 import com.aienuo.tea.service.IUserService;
 import com.aienuo.tea.utils.BuildingTreeData;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class OrganizationBusiness extends BaseBusiness {
      * @return Boolean - 成功标识
      */
     public Boolean create(final OrganizationAddDTO add) {
-        if (StringUtils.isNotEmpty(add.getParentId())) {
+        if (StringUtils.isNotBlank(add.getParentId()) && !StringPool.ZERO.equals(add.getParentId())) {
             // 1、验证父级组织机构是否存在
             Organization parent = this.organizationService.getById(add.getParentId());
             ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertNotNull(parent, "组织机构", "父级组织机构信息不存在");
@@ -83,7 +84,7 @@ public class OrganizationBusiness extends BaseBusiness {
      */
     public Boolean update(final OrganizationUpdateDTO update) {
         // 1、更新校验
-        if (StringUtils.isNotBlank(update.getParentId())) {
+        if (StringUtils.isNotBlank(update.getParentId()) && !StringPool.ZERO.equals(update.getParentId())) {
             ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsFalse(Objects.equals(update.getParentId(), update.getId()), "组织机构", "请确认信息准确无误后重新更新");
             // 2、校验是否把自己的父节点改成了 自己 的子节点
             List<Organization> list = this.organizationService.list();
