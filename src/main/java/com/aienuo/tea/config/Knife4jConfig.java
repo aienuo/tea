@@ -79,13 +79,13 @@ public class Knife4jConfig implements WebMvcConfigurer {
     @Bean
     public OpenAPI Swagger3() {
         return new OpenAPI()
-                .info(new Info().title("训练保障资源统筹调配分析应用（资源保障）")
-                        .description("训练保障资源统筹调配分析应用（资源保障）系统服务接口文档") // 描述
+                .info(new Info().title("典型应用")
+                        .description("典型应用系统服务接口文档") // 描述
                         .version("0.0.1") // 版本号
                         .termsOfService("http://aienuo.com") // 服务条款
                         .contact(new Contact().name("SanJin").url("http://aienuo.com").email("aienuo@qq.com")) // 联系人信息
                         .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0.html"))) // 许可证信息
-                .externalDocs(new ExternalDocumentation().description("训练保障资源统筹调配分析应用（资源保障）系统服务接口文档").url("http://aienuo.com"))
+                .externalDocs(new ExternalDocumentation().description("典型应用系统服务接口文档").url("http://aienuo.com"))
                 .addSecurityItem(new SecurityRequirement().addList(HttpHeaders.AUTHORIZATION))
                 .components(new Components().addSecuritySchemes(HttpHeaders.AUTHORIZATION, new SecurityScheme()
                         .name(HttpHeaders.AUTHORIZATION)
