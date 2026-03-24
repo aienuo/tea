@@ -5,6 +5,9 @@ import com.aienuo.tea.model.vo.OrganizationCoordinateVO;
 import com.aienuo.tea.utils.BuildingCoordinateRangeData;
 import com.aienuo.tea.utils.LatchUtils;
 import com.aienuo.tea.utils.TokenUtils;
+import com.aienuo.tea.utils.smutils.SM2Utils;
+import com.aienuo.tea.utils.smutils.SM3Utils;
+import com.aienuo.tea.utils.smutils.SM4Utils;
 import com.baomidou.mybatisplus.core.toolkit.AES;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Provider;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -226,6 +231,53 @@ class TeaApplicationTests {
         }
     }
 
+    private void smTest() throws Exception {
+
+        for (Provider provider : Security.getProviders()) {
+            System.out.println(provider.getName());
+        }
+
+        // ========== SM3 示例 ==========
+        String data = "Hello, 国密算法!";
+        String sm3Hash = SM3Utils.hash(data);
+        System.out.println("SM3哈希: " + sm3Hash);
+        System.out.println("SM3验证: " + SM3Utils.verify(data, sm3Hash));
+
+        // ========== SM4 示例 ==========
+        String sm4Key = SM4Utils.generateKey();
+        String sm4Iv = SM4Utils.generateIV();
+        System.out.println("SM4密钥: " + sm4Key);
+        System.out.println("SM4 IV: " + sm4Iv);
+
+        String plaintext = "这是一段需要加密的敏感数据";
+        String encrypted = SM4Utils.encryptCBC(plaintext, sm4Key, sm4Iv);
+        String decrypted = SM4Utils.decryptCBC(encrypted, sm4Key, sm4Iv);
+        System.out.println("SM4加密结果: " + encrypted);
+        System.out.println("SM4解密结果: " + decrypted);
+
+        // ========== SM2 示例 ==========
+        // 生成密钥对
+        String[] keyPair = SM2Utils.generateKeyPairHex();
+        String privateKey = keyPair[0];
+        String publicKey = keyPair[1];
+        System.out.println("SM2私钥: " + privateKey);
+        System.out.println("SM2公钥: " + publicKey);
+
+        // SM2加密解密
+        String sm2Plaintext = "SM2加密测试数据";
+        String sm2Ciphertext = SM2Utils.encrypt(sm2Plaintext, publicKey);
+        String sm2Decrypted = SM2Utils.decrypt(sm2Ciphertext, privateKey);
+        System.out.println("SM2加密结果: " + sm2Ciphertext);
+        System.out.println("SM2解密结果: " + sm2Decrypted);
+
+        // SM2签名验签
+        String signature = SM2Utils.sign(data, privateKey);
+        boolean verified = SM2Utils.verify(data, signature, publicKey);
+        System.out.println("SM2签名: " + signature);
+        System.out.println("SM2验签结果: " + verified);
+
+    }
+
     /**
      * 数据库配置 加密
      */
@@ -235,6 +287,11 @@ class TeaApplicationTests {
         new TeaApplicationTests().passwordTest();
         new TeaApplicationTests().testLatchUtils();
         new TeaApplicationTests().coordinateTest();
+        try {
+            new TeaApplicationTests().smTest();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 	/*@RestController

@@ -121,6 +121,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private String getToken(final Map<String, String> headerMap, final Map<String, String> parameterMap) {
         // 从 url 获取三方 token 参数
         String authorization = headerMap.get(HttpHeaders.AUTHORIZATION);
+        authorization = StringUtils.isNotBlank(authorization) ? authorization : headerMap.get(HttpHeaders.AUTHORIZATION.toLowerCase());
         // 应用的身份，是应用的全局唯一凭证，需通过应用id（client_id）及秘钥（client_secret）
         authorization = StringUtils.isNotBlank(authorization) ? authorization : headerMap.get("access_token");
         if (StringUtils.isBlank(authorization)) {

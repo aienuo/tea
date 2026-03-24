@@ -1,5 +1,11 @@
 package com.aienuo.tea.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -34,12 +40,56 @@ public class RedisConfig {
     }
 
     /**
-     * Value 序列化器
+     * Value 序列化器 - 配置安全白名单防止反序列化漏洞
      *
      * @return RedisSerializer<Object>
      */
     private RedisSerializer<Object> valueSerializer() {
-        return new GenericJackson2JsonRedisSerializer();
+        // 创建安全的 ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // 配置多态类型验证器（白名单机制）- 核心安全措施
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+                // 允许基础类型
+                .allowIfSubType("java.lang")
+                .allowIfSubType("java.util")
+                .allowIfSubType("java.math")
+                .allowIfSubType("java.time")
+                // 允许 Spring 相关类
+                .allowIfSubType("org.springframework.data.redis")
+                // 允许项目业务类
+                .allowIfSubType("com.aienuo.tea.model")
+                .allowIfSubType("com.aienuo.tea.common")
+                .allowIfSubType("com.aienuo.tea.business")
+                .allowIfSubType("com.aienuo.tea.controller")
+                .allowIfSubType("com.aienuo.tea.service")
+                .allowIfSubType("com.aienuo.tea.mapper")
+                // 允许 MapStruct 生成的类
+                .allowIfSubType("com.aienuo.tea.model.converter")
+                // 禁止其他所有类（防止恶意类反序列化）
+                .build();
+
+        // 应用类型验证器到 ObjectMapper
+        objectMapper.activateDefaultTyping(
+                typeValidator,
+                ObjectMapper.DefaultTyping.NON_FINAL
+        );
+
+        // 如果使用了 Spring Security，添加这行
+        objectMapper.registerModules(
+                org.springframework.security.jackson2.SecurityJackson2Modules.getModules(
+                        Thread.currentThread().getContextClassLoader()
+                )
+        );
+
+        // 其他安全配置
+        // 忽略未知字段（避免因为字段不匹配导致错误）
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 指定要序列化的域
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
+        // 创建并返回配置好的序列化器
+        return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 
     /**
