@@ -37,10 +37,10 @@ public class CustomizeMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        log.info("开始插入填充...");
         this.strictInsertFill(metaObject, "creatorBy", String.class, getUserName());
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
+        log.info("开始插入填充...{}", metaObject);
     }
 
     /**
@@ -50,9 +50,9 @@ public class CustomizeMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        log.info("开始更新填充...");
         this.strictUpdateFill(metaObject, "updaterBy", String.class, getUserName());
         this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
+        log.info("开始更新填充...{}", metaObject);
     }
 
 }
