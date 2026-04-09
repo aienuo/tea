@@ -107,7 +107,8 @@ public class GuaranteeSecurityConfig {
                         "/webjars/**",
                         "/swagger-resources/**",
                         "/v3/**",
-                        "/index/login"
+                        "/index/login",
+                        "/actuator/**"
                 );
     }
 

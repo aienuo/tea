@@ -204,7 +204,7 @@ public class SecurityServiceImpl {
         MultiValueMap<String, String> valueMap = new LinkedMultiValueMap<>(2);
         valueMap.add("access_token", token);
         valueMap.add("client_ip", clientIp);
-        HttpEntity<JSONObject> httpEntity = new HttpEntity(valueMap, headers);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(valueMap, headers);
         // 忽略SSL验证
         ignoreSSL();
         // 调用接口查询
@@ -241,7 +241,7 @@ public class SecurityServiceImpl {
      * @param token - 前端 Token
      */
     public void logout(String token) {
-        token = token.replaceAll(SecurityFrameworkUtils.AUTHORIZATION_BEARER, "");
+        token = token.replace(SecurityFrameworkUtils.AUTHORIZATION_BEARER, "");
         if (enabled) {
             this.logoutForSso(token);
         }
@@ -266,7 +266,7 @@ public class SecurityServiceImpl {
         String clientIp = IPV4Utils.getClientIpAddress(getHttpServletRequest());
         headers.set("client_ip", clientIp);
         MultiValueMap<String, String> valueMap = new LinkedMultiValueMap<>();
-        HttpEntity<JSONObject> httpEntity = new HttpEntity(valueMap, headers);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(valueMap, headers);
         // 忽略SSL验证
         ignoreSSL();
         // 调用接口查询
@@ -281,7 +281,7 @@ public class SecurityServiceImpl {
      */
     public Boolean checkToken(String token) {
         // 去除 Token 中带的 Bearer
-        token = token.replaceAll(SecurityFrameworkUtils.AUTHORIZATION_BEARER, "");
+        token = token.replace(SecurityFrameworkUtils.AUTHORIZATION_BEARER, "");
         boolean check = Boolean.FALSE;
         if (enabled) {
             check = this.checkTokenForSso(token);
@@ -322,7 +322,7 @@ public class SecurityServiceImpl {
             MultiValueMap<String, String> valueMap = new LinkedMultiValueMap<>(2);
             valueMap.add("access_token", token);
             valueMap.add("client_ip", clientIp);
-            HttpEntity<JSONObject> httpEntity = new HttpEntity(valueMap, headers);
+            HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(valueMap, headers);
             // 忽略SSL验证
             ignoreSSL();
             // 调用接口查询

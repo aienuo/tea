@@ -19,3 +19,11 @@
 * 4、日志密度适中，循环不打、高频不打
 * 5、统一格式：【模块 - 场景】+ 业务 ID + 描述
 * 6、不打敏感数据、无效日志、重复日志
+
+## 三、Idea 内 Docker 构建镜像部署
+
+* 1、配置 Docker 服务
+![配置 Docker 服务](docker_server.png)
+
+*  2、配置 Docker 镜像
+![配置 Docker 镜像](docker_image.png)
