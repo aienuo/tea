@@ -77,18 +77,24 @@ class TeaApplicationTests {
         String key = "9jubPvDU84wkzOm4";
         log.info("key： {}", key);
 
-        String url_resource_guarantee = "jdbc:dm://100.110.111.102:6325?schema=TYPICAL_APPLICATION_RESOURCE_GUARANTEE";
-        url_resource_guarantee = AES.encrypt(url_resource_guarantee, key);
-        log.info("URL 加密后： mpw:{}", url_resource_guarantee);
-
-        String url_training_assessment = "jdbc:dm://100.110.111.102:6325?schema=TYPICAL_APPLICATION_TRAINING_ASSESSMENT";
-        url_training_assessment = AES.encrypt(url_training_assessment, key);
-        log.info("URL 加密后： mpw:{}", url_training_assessment);
-
+        String url = "jdbc:dm://100.110.111.102:6325?schema=TYPICAL_APPLICATION_RESOURCE_GUARANTEE";
+        url = AES.encrypt(url, key);
+        log.info("DM URL 加密后： mpw:{}", url);
         String username = "SYSDBA";
         username = AES.encrypt(username, key);
         log.info("username 加密后： mpw:{}", username);
         String password = "Dameng08";
+        password = AES.encrypt(password, key);
+        log.info("password 加密后： mpw:{}", password);
+
+
+        url = "jdbc:postgresql://100.110.111.106:2345/TYPICAL_APPLICATION_RESOURCE_GUARANTEE";
+        url = AES.encrypt(url, key);
+        log.info("PG URL 加密后： mpw:{}", url);
+        username = "postgres";
+        username = AES.encrypt(username, key);
+        log.info("username 加密后： mpw:{}", username);
+        password = "root";
         password = AES.encrypt(password, key);
         log.info("password 加密后： mpw:{}", password);
     }

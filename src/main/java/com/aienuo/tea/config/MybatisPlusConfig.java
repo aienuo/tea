@@ -8,11 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerIntercep
 import com.baomidou.mybatisplus.extension.plugins.inner.DynamicTableNameJsqlParserInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * MybatisPlus 配置
@@ -21,6 +23,23 @@ import java.util.Map;
 @Configuration
 @MapperScan("com.aienuo.tea.mapper")
 public class MybatisPlusConfig {
+
+    /**
+     * 配置 DatabaseIdProvider
+     *
+     * @return VendorDatabaseIdProvider
+     */
+    @Bean
+    public VendorDatabaseIdProvider databaseIdProvider() {
+        VendorDatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
+        Properties properties = new Properties();
+        // 键为数据库驱动返回的 DatabaseProductName（严格匹配 JDBC 驱动返回的数据库产品名称），值为自定义的别名
+        properties.setProperty("MySQL", "mysql");
+        properties.setProperty("PostgreSQL", "postgresql");
+        properties.setProperty("DM DBMS", "dm");
+        databaseIdProvider.setProperties(properties);
+        return databaseIdProvider;
+    }
 
     /**
      * 配置

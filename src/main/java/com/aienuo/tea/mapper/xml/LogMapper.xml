@@ -131,4 +131,36 @@
         </choose>
     </delete>
 
+    <delete id="clean" parameterType="java.lang.Long" databaseId="postgresql">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE id IN (
+            SELECT id FROM
+            <include refid="table_name"/>
+            <where>
+                <if test="param.id != null and param.id != '' ">
+                    AND id = #{param.id}
+                </if>
+                <if test="param.code != null">
+                    AND CODE = #{param.code}
+                </if>
+
+                <if test="param.creatorBy != null and param.creatorBy != ''">
+                    AND creator_by = #{param.creatorBy}
+                </if>
+                <if test="param.createTime != null ">
+                    AND create_time <![CDATA[<=]]> #{param.createTime}
+                </if>
+            </where>
+            <choose>
+                <when test="param.limit != null ">
+                    LIMIT #{param.limit}
+                </when>
+                <otherwise>
+                    LIMIT 1000
+                </otherwise>
+            </choose>
+        )
+    </delete>
+
 </mapper>

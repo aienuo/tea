@@ -19,14 +19,6 @@ public interface DictionaryMapper extends BaseMapper<Dictionary> {
      * @param query - 查询参数
      * @return OptionVO - 表信息
      */
-    List<OptionVO> queryTableItemListForMySQL(@Param("param")final OptionDTO query);
-
-    /**
-     * 查询表信息
-     *
-     * @param query - 查询参数
-     * @return OptionVO - 表信息
-     */
-    List<OptionVO> queryTableItemListForDM(@Param("param")final OptionDTO query);
+    List<OptionVO> queryTableItemList(@Param("param")final OptionDTO query);
 
 }

@@ -79,10 +79,8 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     @Override
     @DS("master")
     public List<OptionVO> queryTableItemList(final OptionDTO query) {
-        // MySQL 数据库
-//        return this.baseMapper.queryTableItemListForMySQL(query);
-        // 达梦数据库
-        return this.baseMapper.queryTableItemListForDM(query);
+        // 支持 多数据库 类型
+        return this.baseMapper.queryTableItemList(query);
     }
 
     /**

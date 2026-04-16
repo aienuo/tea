@@ -8,8 +8,8 @@
         <result column="label" property="label" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <!-- 字典 - 数据库表名称 -->
-    <select id="queryTableItemListForMySQL" resultMap="listQuery">
+    <!-- MySQL 字典 - 数据库表名称 -->
+    <select id="queryTableItemList" resultMap="listQuery">
         SELECT
             TABLE_NAME,
             REPLACE(TABLE_NAME, 'sys_dict_item_', '') AS 'value',
@@ -35,8 +35,8 @@
         </where>
     </select>
 
-    <!-- 字典 - 数据库表名称 -->
-    <select id="queryTableItemListForDM" resultMap="listQuery">
+    <!-- 达梦 字典 - 数据库表名称 -->
+    <select id="queryTableItemList" resultMap="listQuery" databaseId="dm">
         SELECT
             TABLE_NAME,
             REPLACE(TABLE_NAME, 'SYS_DICT_ITEM_', '') AS "value",
@@ -58,6 +58,36 @@
                 <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
                 <bind name="labelLike" value="'%' + param.label + '%'"/>
                 AND COMMENTS LIKE #{labelLike}
+            </if>
+        </where>
+    </select>
+
+    <!-- PostgreSQL 字典 - 数据库表名称 -->
+    <select id="queryTableItemList" resultMap="listQuery" databaseId="postgresql">
+        SELECT
+            t.table_name,
+            REPLACE(t.table_name, 'sys_dict_item_', '') AS value,
+            pg_catalog.obj_description(c.oid) AS label
+        FROM
+            information_schema.tables t
+            JOIN pg_class c ON c.relname = t.table_name
+            JOIN pg_namespace n ON n.oid = c.relnamespace AND n.nspname = t.table_schema
+        <where>
+            AND t.table_type = 'BASE TABLE'                      -- 只查普通表，不包括视图
+            AND t.table_schema NOT IN ('information_schema', 'pg_catalog')  -- 排除系统模式
+            -- AND t.table_schema = 'public'                 -- 如需限定特定模式，取消注释
+            AND t.table_name LIKE 'sys_dict_item_%'
+            <!-- 表标识 -->
+            <if test="param.value != null and param.value != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="valueLike" value="'%' + param.value + '%'"/>
+                AND t.table_name LIKE #{valueLike}
+            </if>
+            <!-- 表名称 -->
+            <if test="param.label != null and param.label != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="labelLike" value="'%' + param.label + '%'"/>
+                AND pg_catalog.obj_description(c.oid) LIKE #{labelLike}
             </if>
         </where>
     </select>
